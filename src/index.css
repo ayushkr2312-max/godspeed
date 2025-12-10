@@ -24,6 +24,16 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.01em; /* Very tight spacing for very large text */
 }
 
+/* Specific rule for hero GOD SPEED text - 20% less spacing */
+.hero-title h1 span {
+  letter-spacing: 0.008em !important; /* 20% less than 0.01em */
+}
+
+/* Ensure hero subtitle uses Russo One font */
+.hero-subtitle {
+  font-family: 'Russo One', sans-serif !important;
+}
+
 .text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl {
   letter-spacing: 0.025em; /* Slightly more spacing for medium text */
 }

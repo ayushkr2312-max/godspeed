@@ -528,20 +528,20 @@ export default function App() {
               <span className="absolute inset-0 blur-2xl bg-yellow-500/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"></span>
               
               {/* The Solid Main Text (Top Layer) */}
-              <span className="relative z-10 block not-italic" style={{ fontStyle: 'normal' }}>
+              <span className="relative z-10 block font-black italic tracking-tighter">
                 <span className="text-yellow-500 brand-yellow">GOD </span>
                 <span className="text-white speed-text">SPEED</span>
               </span>
 
               {/* The "Ghost" Text (Bottom Layer - Shoots out on hover) */}
-              <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:translate-x-10 group-hover:opacity-[0.15]" style={{ fontStyle: 'normal' }}>
-                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD </span>
-                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
+              <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:translate-x-10 group-hover:opacity-[0.15] font-black italic tracking-tighter">
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308' }}>GOD </span>
+                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white' }}>SPEED</span>
               </span>
               {/* Ghost Text - Left Direction */}
-              <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:-translate-x-10 group-hover:opacity-[0.15]" style={{ fontStyle: 'normal' }}>
-                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD </span>
-                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
+              <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:-translate-x-10 group-hover:opacity-[0.15] font-black italic tracking-tighter">
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308' }}>GOD </span>
+                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white' }}>SPEED</span>
               </span>
             </h1>
 
