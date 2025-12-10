@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Trophy, Users, Calendar, ArrowRight, Twitter, Twitch, Youtube, Instagram, Menu, X, ChevronDown, Gamepad2, Zap, Target } from 'lucide-react';
-import LogoImg from './assets/Transparent-01.png';
+import LogoImg from './assets/logo.svg';
+import FounderImg from './assets/founder.webp';
 import BgVideo from './assets/bgvid2.webm';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -122,7 +123,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
       <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
           {/* Mini Logo for Nav */}
-          <div className="w-9 h-10">
+          <div className="w-9 h-11">
             <img src={LogoImg} alt="GS" className="w-full h-full object-cover object-center" />
           </div>
           <span className="text-xl font-black italic tracking-tighter nav-logo">
@@ -546,7 +547,7 @@ export default function App() {
             </h1>
 
             <p className={`text-zinc-400 text-lg md:text-xl font-mono tracking-widest uppercase max-w-xl mx-auto mb-12 hero-initial ${mounted ? 'hero-subtitle animate' : ''}`}>
-              Defy Limits. Dominate the server.
+              BUILT ON CULTURE. DRIVEN TO COMPETE.
             </p>
 
             <div className={`flex gap-4 hero-initial ${mounted ? 'hero-cta animate' : ''}`}>
@@ -601,12 +602,21 @@ export default function App() {
           />
           
           <div className="max-w-4xl mx-auto text-center text-zinc-300 space-y-6" data-aos="fade-up">
-            <p className="text-lg leading-relaxed">
-              GOD SPEED Esports is a premier competitive gaming organization dedicated to excellence, innovation, and pushing the boundaries of esports. Founded with a passion for competition and a drive to dominate, we bring together elite talent from around the globe to compete at the highest levels.
-            </p>
-            <p className="text-lg leading-relaxed">
-              Our mission is to build a legacy of champions while fostering a community of passionate gamers. We believe in the power of teamwork, dedication, and the relentless pursuit of greatness both in and out of the game.
-            </p>
+            <div className="transform -skew-x-6">
+              <p className="text-xl leading-relaxed" style={{ fontSize: '117%' }}>
+                God Speed is a competitive esports organization built on identity, culture, and high-level performance. We focus on creating a strong, positive environment where players can grow, teams can thrive, and our community can feel connected to the work we do.
+              </p>
+            </div>
+            <div className="transform -skew-x-6">
+              <p className="text-xl leading-relaxed" style={{ fontSize: '117%' }}>
+                We're committed to setting a standard — one built on structure, preparation, and doing things the right way. No shortcuts. No noise. Just a group dedicated to showing up with purpose and representing our brand with pride.
+              </p>
+            </div>
+            <div className="transform -skew-x-6">
+              <p className="text-xl leading-relaxed" style={{ fontSize: '117%' }}>
+                On stage, in practice, and across every project, God Speed stands for professionalism, consistency, and a culture that supports development. Our goal is to elevate talent, build a recognizable and trusted brand, and operate with the same energy and integrity that we expect from our competitors.
+              </p>
+            </div>
             <div className="flex flex-col items-center space-y-10 pt-12">
               <div className="w-[250px] h-[10px] bg-yellow-500 transform -skew-x-12"></div>
               <div className="w-[150px] h-[7.5px] bg-yellow-500 transform -skew-x-12"></div>
@@ -805,6 +815,52 @@ export default function App() {
         </div>
       </section>
 
+      {/* A WORD FROM THE FOUNDER SECTION */}
+      <section className="pt-12 pb-16 relative">
+        <div className="container mx-auto px-6">
+          <SectionHeader 
+            title="A Word From The Founder" 
+            subtitle="Our Vision" 
+          />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-center">
+            {/* Left: Founder Image */}
+            <div className="lg:col-span-2 relative" data-aos="fade-right">
+              <div className="relative overflow-hidden bg-zinc-900 border border-zinc-800 rounded-lg max-w-xs mx-auto">
+                <img
+                  src={FounderImg}
+                  alt="Founder"
+                  className="w-full h-auto object-contain object-center transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              </div>
+              {/* Yellow accent line */}
+              <div className="absolute bottom-0 left-0 w-20 h-1 bg-yellow-500 transform -skew-x-12"></div>
+            </div>
+
+            {/* Right: Founder Message */}
+            <div className="lg:col-span-8 space-y-4" data-aos="fade-left">
+              <div className="space-y-3">
+                <p className="text-zinc-300 text-base leading-relaxed">
+                  My role is to drive the brand's vision, steer our competitive direction, and manage the day-to-day operations across all our divisions. Drawing from my experience in commentary, league management, and event production, I'm here to ensure we operate with professional structure.
+                </p>
+                <p className="text-zinc-300 text-base leading-relaxed">
+                  Ultimately, my focus is to build a culture where our players and creators don't just compete—they grow through consistency and purpose.
+                </p>
+              </div>
+              
+              {/* Founder Signature */}
+              <div className="pt-6 border-t border-zinc-800">
+                <div className="transform -skew-x-6">
+                  <p className="text-yellow-500 font-bold text-base mb-1">Eric "Wolfy2Hot" Madera</p>
+                </div>
+                <p className="text-white text-xs font-mono uppercase">Founder and CEO of God Speed Esports</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ABOUT / FOOTER SECTION */}
       <section ref={aboutRef} className="relative py-24 border-t border-zinc-900">
         <div className="container mx-auto px-6">
@@ -817,25 +873,21 @@ export default function App() {
                 <h2 className="text-4xl font-black italic tracking-tighter text-white"><span className="text-yellow-500">GOD </span><span className="text-white">SPEED</span></h2>
               </div>
               <p className="text-zinc-400 leading-relaxed mb-8 max-w-md">
-                We are not just an organization; we are a movement. Born in the server, forged in the clutch. GOD SPEED represents the pinnacle of competitive agility and strategic dominance.
+                God Speed is built on community, culture, and competition. We're here to create a positive environment where players can grow, teams can thrive, and fans can feel part of something bigger.
               </p>
 
               {/* Social icons moved to main page (hero) and floating bottom-right */}
             </div>
 
-            {/* Right Col: Newsletter */}
+            {/* Right Col: Contact */}
             <div className="bg-zinc-900 p-8 rounded-sm border border-zinc-800">
-              <h3 className="text-xl font-bold uppercase text-white mb-2">Join the Legion</h3>
-              <p className="text-zinc-400 text-sm mb-6">Get notified about roster updates, merch drops, and match results.</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="ENTER YOUR EMAIL"
-                  className="bg-black border border-zinc-700 text-white px-4 py-3 w-full focus:outline-none focus:border-yellow-500 font-mono text-sm"
-                />
-                <button className="cyber-glitch bg-yellow-500 text-black px-6 py-3 font-bold uppercase hover:bg-white transition-colors">
-                  <ArrowRight />
-                </button>
+              <h3 className="text-xl font-bold uppercase mb-2"><span className="text-yellow-500">CONTACT</span> <span className="text-white">US</span></h3>
+              <p className="text-zinc-400 text-sm mb-6">For partnerships, inquiries, or general questions.</p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <p className="text-white font-mono text-sm">GodSpeedES.contact@gmail.com</p>
+                </div>
               </div>
             </div>
 
