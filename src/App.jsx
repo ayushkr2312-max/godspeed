@@ -950,42 +950,18 @@ export default function App() {
       {/* ABOUT / FOOTER SECTION */}
       <section ref={aboutRef} className="relative py-24 border-t border-zinc-900">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-
-            {/* Left Col */}
-            <div>
-              <div className="flex items-center gap-4 mb-8">
-                <img src={LOGO_URL} alt="Logo" className="w-16 h-16 object-contain" />
-                <h2 className="text-4xl font-black italic tracking-tighter text-white"><span className="text-yellow-500">GOD </span><span className="text-white">SPEED</span></h2>
-              </div>
-              <p className="text-zinc-400 leading-relaxed mb-8 max-w-md">
-                God Speed is built on community, culture, and competition. We're here to create a positive environment where players can grow, teams can thrive, and fans can feel part of something bigger.
-              </p>
-
-              {/* Social icons moved to main page (hero) and floating bottom-right */}
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <img src={LOGO_URL} alt="Logo" className="w-16 h-16 object-contain" />
+              <h2 className="text-4xl font-black italic tracking-tighter text-white"><span className="text-yellow-500">GOD </span><span className="text-white">SPEED</span></h2>
             </div>
-
-            {/* Right Col: Contact */}
-            <div className="bg-zinc-900 p-8 rounded-sm border border-zinc-800">
-              <h3 className="text-xl font-bold uppercase mb-2"><span className="text-yellow-500">CONTACT</span> <span className="text-white">US</span></h3>
-              <p className="text-zinc-400 text-sm mb-6">For partnerships, inquiries, or general questions.</p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  <p className="text-white font-mono text-sm">GodSpeedES.contact@gmail.com</p>
-                </div>
-              </div>
-            </div>
-
+            <p className="text-zinc-400 leading-relaxed mb-8 max-w-md mx-auto">
+              God Speed is built on community, culture, and competition. We're here to create a positive environment where players can grow, teams can thrive, and fans can feel part of something bigger.
+            </p>
           </div>
 
-          <div className="border-t border-zinc-900 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center text-zinc-600 text-xs font-mono uppercase">
+          <div className="border-t border-zinc-900 mt-20 pt-8 text-center text-zinc-600 text-xs font-mono uppercase">
             <p>&copy; 2024 GOD SPEED Esports. All Rights Reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white">Privacy Policy</a>
-              <a href="#" className="hover:text-white">Terms of Service</a>
-              <a href="#" className="hover:text-white">Contact</a>
-            </div>
           </div>
         </div>
       </section>
