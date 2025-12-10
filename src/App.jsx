@@ -861,6 +861,92 @@ export default function App() {
         </div>
       </section>
 
+      {/* CONTACT US SECTION */}
+      <section className="pt-12 pb-16 relative">
+        <div className="container mx-auto px-6">
+          <SectionHeader 
+            title="Contact Us" 
+            subtitle="Get In Touch" 
+          />
+          
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-zinc-900 p-8 rounded-sm border border-zinc-800">
+              <p className="text-zinc-400 text-center mb-8">For partnerships, inquiries, or general questions, reach out to us below.</p>
+              
+              <form 
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target);
+                  const name = formData.get('name');
+                  const email = formData.get('email');
+                  const inquiry = formData.get('inquiry');
+                  
+                  try {
+                    const result = await emailjs.send(
+                      'service_j7grdas', // Your EmailJS service ID
+                      'template_mtv7jqk', // Your EmailJS template ID
+                      {
+                        from_name: name,
+                        from_email: email,
+                        message: inquiry,
+                        to_email: ' GodSpeedES.contact@gmail.com'
+                      }
+                    );
+                    
+                    alert('Thank you for your inquiry! We will get back to you soon.');
+                    e.target.reset();
+                  } catch (error) {
+                    console.error('EmailJS error:', error);
+                    alert('Sorry, there was an error sending your message. Please try again or email us directly at GodSpeedES.contact@gmail.com');
+                  }
+                }}
+                className="space-y-6"
+              >
+                <div>
+                  <label className="block text-yellow-500 text-sm font-mono uppercase mb-2">Your Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    className="w-full bg-black border border-zinc-700 text-white px-4 py-3 focus:outline-none focus:border-yellow-500 font-mono text-sm"
+                    placeholder="Enter your name"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-yellow-500 text-sm font-mono uppercase mb-2">Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="w-full bg-black border border-zinc-700 text-white px-4 py-3 focus:outline-none focus:border-yellow-500 font-mono text-sm"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-yellow-500 text-sm font-mono uppercase mb-2">Your Inquiry</label>
+                  <textarea
+                    name="inquiry"
+                    required
+                    rows="5"
+                    className="w-full bg-black border border-zinc-700 text-white px-4 py-3 focus:outline-none focus:border-yellow-500 font-mono text-sm resize-none"
+                    placeholder="Tell us about your inquiry..."
+                  ></textarea>
+                </div>
+                
+                <button
+                  type="submit"
+                  className="w-full cyber-glitch bg-yellow-500 text-black px-6 py-3 font-bold uppercase hover:bg-white transition-colors"
+                >
+                  Send Inquiry
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ABOUT / FOOTER SECTION */}
       <section ref={aboutRef} className="relative py-24 border-t border-zinc-900">
         <div className="container mx-auto px-6">
