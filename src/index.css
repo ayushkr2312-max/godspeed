@@ -2,13 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
 html {
+  font-family: 'Russo One', sans-serif;
   background-color: #000;
 }
 
 body {
+  font-family: 'Russo One', sans-serif;
   position: relative;
   overflow-x: hidden;
+}
+
+/* Adjust letter spacing for different text sizes */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: 0.02em; /* Subtle spacing for headings */
+}
+
+.text-6xl, .text-7xl, .text-8xl, .text-9xl {
+  letter-spacing: 0.01em; /* Very tight spacing for very large text */
+}
+
+.text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl {
+  letter-spacing: 0.025em; /* Slightly more spacing for medium text */
+}
+
+p, span, div {
+  letter-spacing: 0.03em; /* Moderate spacing for body text */
 }
 
 .streaks-container {
@@ -71,20 +92,26 @@ body {
   animation: logoAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Title Animation */
-@keyframes titleSlideUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 40px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+/* Title Animation - Hyperspace Snap */
+@keyframes hyperSnap {
+    0% {
+        opacity: 0;
+        filter: blur(20px);
+        transform: scale(1.5);
+        letter-spacing: 1em; /* Starts stretched */
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: scale(1);
+        letter-spacing: normal; /* Snaps to normal */
+    }
 }
 
 .hero-title.animate {
-  animation: titleSlideUp 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s forwards;
+    animation: hyperSnap 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    will-change: transform, filter, letter-spacing;
 }
 
 /* Subtitle & Buttons Animation */

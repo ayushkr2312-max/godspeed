@@ -122,11 +122,11 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
       <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
           {/* Mini Logo for Nav */}
-          <div className="w-8 h-8 bg-black rounded-full overflow-hidden flex items-center justify-center animate-glow">
+          <div className="w-9 h-10">
             <img src={LogoImg} alt="GS" className="w-full h-full object-cover object-center" />
           </div>
           <span className="text-xl font-black italic tracking-tighter nav-logo">
-            <span className="text-yellow-500">GOD</span>
+            <span className="text-yellow-500">GOD </span>
             <span className="text-white">SPEED</span>
           </span>
         </div>
@@ -517,7 +517,7 @@ export default function App() {
             <div className="absolute -inset-4 bg-yellow-300/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <img
               src={LOGO_URL}
-              alt="Godspeed Logo"
+              alt="GOD SPEED Logo"
               className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 animate-float"
               style={{ top: '6px' }}
             />
@@ -529,19 +529,19 @@ export default function App() {
               
               {/* The Solid Main Text (Top Layer) */}
               <span className="relative z-10 block not-italic" style={{ fontStyle: 'normal' }}>
-                <span className="text-yellow-500">GOD</span>
-                <span className="text-white">SPEED</span>
+                <span className="text-yellow-500 brand-yellow">GOD </span>
+                <span className="text-white speed-text">SPEED</span>
               </span>
 
               {/* The "Ghost" Text (Bottom Layer - Shoots out on hover) */}
               <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:translate-x-10 group-hover:opacity-[0.15]" style={{ fontStyle: 'normal' }}>
-                <span className="text-yellow-500" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD</span>
-                <span className="text-white" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD </span>
+                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
               </span>
               {/* Ghost Text - Left Direction */}
               <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:-translate-x-10 group-hover:opacity-[0.15]" style={{ fontStyle: 'normal' }}>
-                <span className="text-yellow-500" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD</span>
-                <span className="text-white" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308', fontStyle: 'normal' }}>GOD </span>
+                <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white', fontStyle: 'normal' }}>SPEED</span>
               </span>
             </h1>
 
@@ -577,10 +577,15 @@ export default function App() {
         </div>
 
         {/* Floating social buttons bottom-right on main page */}
-        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3">
+        <div className="fixed bottom-3 sm:bottom-8 right-3 sm:right-8 z-50 flex flex-col gap-1.5 sm:gap-3">
           {[Twitter, Twitch, Youtube, Instagram].map((Icon, i) => (
-            <a key={i} href="#" aria-label={`social-float-${i}`} className="w-12 h-12 bg-zinc-900 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all transform hover:-translate-y-1 shadow-lg">
-              <Icon className="w-6 h-6" />
+            <a 
+              key={i} 
+              href="#" 
+              aria-label={`social-float-${i}`} 
+              className="w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/80 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all transform hover:-translate-y-1 shadow-lg"
+            >
+              <Icon className="w-4 h-4 sm:w-6 sm:h-6" />
             </a>
           ))}
         </div>
@@ -597,7 +602,7 @@ export default function App() {
           
           <div className="max-w-4xl mx-auto text-center text-zinc-300 space-y-6" data-aos="fade-up">
             <p className="text-lg leading-relaxed">
-              Godspeed Esports is a premier competitive gaming organization dedicated to excellence, innovation, and pushing the boundaries of esports. Founded with a passion for competition and a drive to dominate, we bring together elite talent from around the globe to compete at the highest levels.
+              GOD SPEED Esports is a premier competitive gaming organization dedicated to excellence, innovation, and pushing the boundaries of esports. Founded with a passion for competition and a drive to dominate, we bring together elite talent from around the globe to compete at the highest levels.
             </p>
             <p className="text-lg leading-relaxed">
               Our mission is to build a legacy of champions while fostering a community of passionate gamers. We believe in the power of teamwork, dedication, and the relentless pursuit of greatness both in and out of the game.
@@ -690,7 +695,7 @@ export default function App() {
             <div className="p-4 md:p-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-1">GodSpeed Esports {isLive ? 'Live' : 'Offline'}</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-1">GOD SPEED Esports {isLive ? 'Live' : 'Offline'}</h3>
                   <p className="flex items-center gap-2 text-sm text-zinc-400">
                     {isLive ? (
                       <>
@@ -720,7 +725,7 @@ export default function App() {
               {isLive && (
                 <div className="mt-4 md:hidden">
                   <button 
-                    onClick={() => window.open('https://www.twitch.tv/popout/godspeedes/chat?popout=', 'GodSpeedES Chat', 'width=350,height=600' + ',left=' + (window.screen.width - 350) + ',top=' + (window.screen.height - 600) / 2)}
+                    onClick={() => window.open('https://www.twitch.tv/popout/godspeedes/chat?popout=', 'GOD SPEED ES Chat', 'width=350,height=600' + ',left=' + (window.screen.width - 350) + ',top=' + (window.screen.height - 600) / 2)}
                     className="w-full py-2 px-4 bg-zinc-800 hover:bg-zinc-700 text-sm text-white font-medium rounded transition-colors flex items-center justify-center gap-2"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -809,10 +814,10 @@ export default function App() {
             <div>
               <div className="flex items-center gap-4 mb-8">
                 <img src={LOGO_URL} alt="Logo" className="w-16 h-16 object-contain" />
-                <h2 className="text-4xl font-black italic tracking-tighter text-white">GODSPEED</h2>
+                <h2 className="text-4xl font-black italic tracking-tighter text-white"><span className="text-yellow-500">GOD </span><span className="text-white">SPEED</span></h2>
               </div>
               <p className="text-zinc-400 leading-relaxed mb-8 max-w-md">
-                We are not just an organization; we are a movement. Born in the server, forged in the clutch. Godspeed represents the pinnacle of competitive agility and strategic dominance.
+                We are not just an organization; we are a movement. Born in the server, forged in the clutch. GOD SPEED represents the pinnacle of competitive agility and strategic dominance.
               </p>
 
               {/* Social icons moved to main page (hero) and floating bottom-right */}
@@ -837,7 +842,7 @@ export default function App() {
           </div>
 
           <div className="border-t border-zinc-900 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center text-zinc-600 text-xs font-mono uppercase">
-            <p>&copy; 2024 Godspeed Esports. All Rights Reserved.</p>
+            <p>&copy; 2024 GOD SPEED Esports. All Rights Reserved.</p>
             <div className="flex gap-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-white">Privacy Policy</a>
               <a href="#" className="hover:text-white">Terms of Service</a>
