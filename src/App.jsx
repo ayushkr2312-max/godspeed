@@ -572,7 +572,7 @@ export default function App() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-50">
+        <div className="absolute bottom-10 left-[44%] -translate-x-1/2 sm:left-[49%] sm:-translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-50">
           <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500">Scroll</span>
           <ChevronDown className="w-5 h-5 text-yellow-500" />
         </div>
