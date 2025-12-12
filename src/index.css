@@ -9,6 +9,14 @@ html {
   background-color: #000;
 }
 
+body,
+body *,
+a,
+button,
+[role="button"] {
+  cursor: none !important;
+}
+
 body {
   font-family: 'Russo One', sans-serif;
   position: relative;
@@ -16,17 +24,28 @@ body {
 }
 
 /* Adjust letter spacing for different text sizes */
-h1, h2, h3, h4, h5, h6 {
-  letter-spacing: 0.02em; /* Subtle spacing for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 0.02em;
+  /* Subtle spacing for headings */
 }
 
-.text-6xl, .text-7xl, .text-8xl, .text-9xl {
-  letter-spacing: 0.01em; /* Very tight spacing for very large text */
+.text-6xl,
+.text-7xl,
+.text-8xl,
+.text-9xl {
+  letter-spacing: 0.01em;
+  /* Very tight spacing for very large text */
 }
 
 /* Specific rule for hero GOD SPEED text - 20% less spacing */
 .hero-title h1 span {
-  letter-spacing: 0.008em !important; /* 20% less than 0.01em */
+  letter-spacing: 0.008em !important;
+  /* 20% less than 0.01em */
 }
 
 /* Ensure hero subtitle uses Russo One font */
@@ -34,12 +53,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Russo One', sans-serif !important;
 }
 
-.text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl {
-  letter-spacing: 0.025em; /* Slightly more spacing for medium text */
+.text-xl,
+.text-2xl,
+.text-3xl,
+.text-4xl,
+.text-5xl {
+  letter-spacing: 0.025em;
+  /* Slightly more spacing for medium text */
 }
 
-p, span, div {
-  letter-spacing: 0.03em; /* Moderate spacing for body text */
+p,
+span,
+div {
+  letter-spacing: 0.03em;
+  /* Moderate spacing for body text */
 }
 
 .streaks-container {
@@ -57,19 +84,58 @@ p, span, div {
   top: 0;
   width: 2px;
   height: 100%;
-  animation: fall 0.89s linear infinite; /* Increased from 0.67s */
+  animation: fall 0.89s linear infinite;
+  /* Increased from 0.67s */
   will-change: transform;
 }
 
-.streaks-left .streak:nth-child(1) { left: 10px; animation-delay: -0.13s; background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-left .streak:nth-child(2) { left: 20px; animation-delay: -0.4s; background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-left .streak:nth-child(3) { left: 30px; animation-delay: -0.67s; background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-left .streak:nth-child(4) { left: 40px; animation-delay: -0.27s; background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-left .streak:nth-child(5) { left: 50px; animation-delay: -0.53s; background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px); }
+.streaks-left .streak:nth-child(1) {
+  left: 10px;
+  animation-delay: -0.13s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+}
 
-.streaks-right .streak:nth-child(1) { right: 10px; animation-delay: -0.2s; background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-right .streak:nth-child(2) { right: 20px; animation-delay: -0.47s; background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px); }
-.streaks-right .streak:nth-child(3) { right: 30px; animation-delay: -0.73s; background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px); }
+.streaks-left .streak:nth-child(2) {
+  left: 20px;
+  animation-delay: -0.4s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-left .streak:nth-child(3) {
+  left: 30px;
+  animation-delay: -0.67s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-left .streak:nth-child(4) {
+  left: 40px;
+  animation-delay: -0.27s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-left .streak:nth-child(5) {
+  left: 50px;
+  animation-delay: -0.53s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-right .streak:nth-child(1) {
+  right: 10px;
+  animation-delay: -0.2s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-right .streak:nth-child(2) {
+  right: 20px;
+  animation-delay: -0.47s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+}
+
+.streaks-right .streak:nth-child(3) {
+  right: 30px;
+  animation-delay: -0.73s;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.375), rgba(255, 255, 255, 0.375) 720px, transparent 720px, transparent 774px);
+}
 
 
 @keyframes fall {
@@ -92,6 +158,7 @@ p, span, div {
     opacity: 0;
     transform: scale3d(1.2, 1.2, 1);
   }
+
   to {
     opacity: 1;
     transform: scale3d(1, 1, 1);
@@ -104,24 +171,27 @@ p, span, div {
 
 /* Title Animation - Hyperspace Snap */
 @keyframes hyperSnap {
-    0% {
-        opacity: 0;
-        filter: blur(20px);
-        transform: scale(1.5);
-        letter-spacing: 1em; /* Starts stretched */
-    }
-    100% {
-        opacity: 1;
-        filter: blur(0);
-        transform: scale(1);
-        letter-spacing: normal; /* Snaps to normal */
-    }
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: scale(1.5);
+    letter-spacing: 1em;
+    /* Starts stretched */
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+    letter-spacing: normal;
+    /* Snaps to normal */
+  }
 }
 
 .hero-title.animate {
-    animation: hyperSnap 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    opacity: 0;
-    will-change: transform, filter, letter-spacing;
+  animation: hyperSnap 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+  will-change: transform, filter, letter-spacing;
 }
 
 /* Subtitle & Buttons Animation */
@@ -130,6 +200,7 @@ p, span, div {
     opacity: 0;
     transform: translate3d(0, 20px, 0);
   }
+
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -146,6 +217,7 @@ p, span, div {
   from {
     transform: translate3d(0, -100%, 0);
   }
+
   to {
     transform: translate3d(0, 0, 0);
   }
@@ -162,13 +234,16 @@ p, span, div {
 .nav-logo:hover {
   text-shadow: 0 0 6px rgba(255, 215, 0, 0.5), 0 0 12px rgba(255, 215, 0, 0.3);
 }
+
 @keyframes neon-pulse {
   0% {
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   }
+
   50% {
     box-shadow: 0 0 20px rgba(220, 194, 3, 0.967), 0 0 10px rgba(255, 255, 255, 0.6);
   }
+
   100% {
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
   }
@@ -176,4 +251,83 @@ p, span, div {
 
 .animate-glow {
   animation: neon-pulse 5s infinite ease-in-out;
+}
+
+/* Custom Cursor & HUD Styles */
+.writing-vertical {
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+}
+
+/* Holographic Card Effect */
+.holographic {
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.holographic::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 215, 0, 0.2) 50%,
+      rgba(255, 255, 255, 0.1) 60%,
+      transparent 100%);
+  transform: skewX(-25deg);
+  transition: none;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.holographic:hover::after {
+  animation: holo-sweep 0.7s ease-in-out;
+}
+
+@keyframes holo-sweep {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+/* CRT Scanline Overlay Animation (Subtle) */
+@keyframes scanline-scroll {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+/* Breathing Border for Special Cards */
+@keyframes breathe-border {
+  0% {
+    border-color: rgba(234, 179, 8, 0.3);
+    box-shadow: 0 0 5px rgba(234, 179, 8, 0.1);
+  }
+
+  50% {
+    border-color: rgba(234, 179, 8, 0.8);
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+  }
+
+  100% {
+    border-color: rgba(234, 179, 8, 0.3);
+    box-shadow: 0 0 5px rgba(234, 179, 8, 0.1);
+  }
+}
+
+.border-breathe {
+  animation: breathe-border 3s infinite ease-in-out;
 }
