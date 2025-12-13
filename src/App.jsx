@@ -739,7 +739,7 @@ export default function App() {
               <img
                 src={LOGO_URL}
                 alt="GOD SPEED Logo"
-                className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 animate-logo-pulse group-hover:[animation-play-state:paused]"
+                className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 animate-logo-pulse group-hover:[animation-play-state:paused] group-hover:drop-shadow-[0_0_4px_rgba(0,0,0,1)]"
                 style={{ top: '6px' }}
               />
             </div>
