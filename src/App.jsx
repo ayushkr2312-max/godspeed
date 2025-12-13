@@ -89,7 +89,7 @@ const SectionHeader = ({ title, subtitle }) => (
         <h3 className="text-yellow-500 font-bold tracking-widest uppercase mb-2 text-sm">{subtitle}</h3>
         <h2 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-white">
           {title}
-          <span className="text-yellow-500">.</span>
+          <span className="text-yellow-500 inline-block animate-dot-blink">.</span>
         </h2>
         <div className="w-24 h-1 bg-yellow-500 mx-auto mt-6 transform -skew-x-12"></div>
       </div>
@@ -739,7 +739,7 @@ export default function App() {
               <img
                 src={LOGO_URL}
                 alt="GOD SPEED Logo"
-                className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 drop-shadow-[0_0_1px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_0_5px_rgba(0,0,0,0.95)]"
+                className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 animate-logo-pulse group-hover:[animation-play-state:paused]"
                 style={{ top: '6px' }}
               />
             </div>
@@ -761,7 +761,7 @@ export default function App() {
               <span className="absolute inset-0 blur-2xl bg-yellow-500/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"></span>
 
               {/* The Solid Main Text (Top Layer) */}
-              <span className="relative z-10 block font-black italic tracking-tighter">
+              <span className="relative z-10 block font-black italic tracking-tighter animate-text-pulse group-hover:[animation-play-state:paused]">
                 <span className="text-yellow-500 brand-yellow">GOD </span>
                 <span className="text-white speed-text">SPEED</span>
               </span>
@@ -822,7 +822,7 @@ export default function App() {
           {[XIcon, Twitch, Youtube, DiscordIcon].map((Icon, i) => {
             // Calculate styles based on state
             let style = {};
-            let baseClasses = "fixed pointer-events-auto w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/90 border border-yellow-500/50 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 z-50";
+            let baseClasses = `fixed pointer-events-auto w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/90 border border-yellow-500/50 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 z-50 hero-initial ${mounted ? 'hero-social animate' : ''}`;
 
             if (!scrolled) {
               // Hero Positions
@@ -1167,21 +1167,25 @@ export default function App() {
             subtitle="Our Vision"
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-center">
+          <div className="relative group grid grid-cols-1 lg:grid-cols-10 gap-8 items-center p-8">
+            {/* Yellow Frame Accents - Top Right & Bottom Left - Covering the whole section */}
+            <div className="absolute -top-4 -right-4 w-16 h-1 bg-yellow-500 z-0 skew-x-[-10deg]"></div>
+            <div className="absolute -top-4 -right-4 w-1 h-16 bg-yellow-500 z-0 skew-y-[-10deg]"></div>
+
+            <div className="absolute -bottom-4 -left-4 w-16 h-1 bg-yellow-500 z-0 skew-x-[-10deg]"></div>
+            <div className="absolute -bottom-4 -left-4 w-1 h-16 bg-yellow-500 z-0 skew-y-[-10deg]"></div>
+
             {/* Left: Founder Image */}
             <div className="lg:col-span-2 relative" data-aos="fade-right">
               <TiltContainer scale={1.05} maxRotation={5}>
-                <div className="relative">
+                <div className="relative group/image">
                   <div className="relative overflow-hidden bg-zinc-900 border border-zinc-800 rounded-lg max-w-xs mx-auto z-10">
                     <img
                       src={FounderImg}
                       alt="Founder"
-                      className="w-full h-auto object-contain object-center transition-transform duration-700 hover:scale-105"
+                      className="w-full h-auto object-contain object-center transition-transform duration-700 group-hover/image:scale-105 relative z-20"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   </div>
-                  {/* Yellow accent line */}
-                  <div className="absolute bottom-0 left-0 w-20 h-1 bg-yellow-500 transform -skew-x-12 z-20"></div>
                 </div>
               </TiltContainer>
             </div>
@@ -1189,10 +1193,10 @@ export default function App() {
             {/* Right: Founder Message */}
             <div className="lg:col-span-8 space-y-4" data-aos="fade-left">
               <div className="space-y-3">
-                <p className="text-zinc-300 text-base leading-relaxed">
+                <p className="text-zinc-300 text-base leading-relaxed hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
                   My role is to drive the brand's vision, steer our competitive direction, and manage the day-to-day operations across all our divisions. Drawing from my experience in commentary, league management, and event production, I'm here to ensure we operate with professional structure.
                 </p>
-                <p className="text-zinc-300 text-base leading-relaxed">
+                <p className="text-zinc-300 text-base leading-relaxed hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
                   Ultimately, my focus is to build a culture where our players and creators don't just compete—they grow through consistency and purpose.
                 </p>
               </div>
@@ -1200,9 +1204,9 @@ export default function App() {
               {/* Founder Signature */}
               <div className="pt-6 border-t border-zinc-800">
                 <div className="transform -skew-x-6">
-                  <p className="text-yellow-500 font-bold text-base mb-1">Eric "Wolfy2Hot" Madera</p>
+                  <p className="text-yellow-500 font-bold text-base mb-1 hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">Eric "Wolfy2Hot" Madera</p>
                 </div>
-                <p className="text-white text-xs font-mono uppercase">Founder and CEO of God Speed Esports</p>
+                <p className="text-white text-xs font-mono uppercase hover:text-yellow-500 transition-colors duration-300 cursor-default">Founder and CEO of God Speed Esports</p>
               </div>
             </div>
           </div>
