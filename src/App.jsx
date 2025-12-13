@@ -55,7 +55,7 @@ const GlitchText = ({ text, className = "" }) => {
 };
 
 const SectionHeader = ({ title, subtitle }) => (
-  <div className="mb-12 text-center" data-aos="fade-up">
+  <div className="mb-12 text-center" data-aos="fade-up" data-cursor-hover>
     <TiltContainer scale={1.02} maxRotation={3.5}>
       <div className="inline-block">
         <h3 className="text-yellow-500 font-bold tracking-widest uppercase mb-2 text-sm">{subtitle}</h3>
@@ -141,7 +141,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
   const navLinks = [
     { name: 'ROSTERS', id: 'roster' },
     { name: 'About', id: 'about' },
-    { name: 'Partners', id: 'partners' },
+    { name: 'Partners', id: 'contact' },
   ];
 
   return (
@@ -312,17 +312,33 @@ const InfiniteMarquee = () => {
       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
       <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
 
-      <div className="flex whitespace-nowrap animate-scroll-text group-hover:[animation-play-state:paused] cursor-default">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="flex items-center px-8">
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
-            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-          </div>
-        ))}
+      <div className="flex whitespace-nowrap overflow-hidden">
+        {/* Group 1 */}
+        <div className="flex shrink-0 animate-scroll-text group-hover:[animation-play-state:paused]">
+          {[...Array(4)].map((_, i) => (
+            <div key={`g1-${i}`} className="flex items-center px-8">
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+            </div>
+          ))}
+        </div>
+        {/* Group 2 (Duplicate for seamless loop) */}
+        <div className="flex shrink-0 animate-scroll-text group-hover:[animation-play-state:paused]" aria-hidden="true">
+          {[...Array(4)].map((_, i) => (
+            <div key={`g2-${i}`} className="flex items-center px-8">
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -347,6 +363,7 @@ export default function App() {
   const lenisRef = useRef(null);
   const [mounted, setMounted] = useState(false);
   const zoomCursorRef = useRef({ x: 0, y: 0, active: false });
+  const contactRef = useRef(null);
 
   // Trigger animations on mount
   useEffect(() => {
@@ -374,6 +391,9 @@ export default function App() {
 
     const handleScroll = ({ scroll, limit, velocity, direction, progress }) => {
       setScrolled(scroll > 50);
+
+      // Check cursor variant based on sections
+      // Check cursor variant based on sections
 
       // Use requestAnimationFrame for smooth parallax updates
       if (rafId.current) {
@@ -456,7 +476,7 @@ export default function App() {
       'about': aboutUsRef,
       'roster': rosterRef,
       'schedule': scheduleRef,
-      'partners': aboutRef // Just scrolling to bottom for now
+      'contact': contactRef
     };
     const ref = refs[id];
     if (ref && ref.current && lenisRef.current) {
@@ -470,7 +490,7 @@ export default function App() {
 
   return (
     <div id="warp-container" className="bg-black min-h-screen text-white font-sans selection:bg-yellow-500 selection:text-black overflow-x-hidden cursor-none">
-      <CustomCursor />
+      <CustomCursor zoomRef={zoomRef} />
       <HUDOverlay />
       <div className="streaks-container">
         <div className="streaks streaks-left">
@@ -997,7 +1017,7 @@ export default function App() {
             {MATCHES.upcoming.map((match) => (
               <div key={match.id} className="relative group" data-aos="fade-right">
                 <TiltContainer scale={1.02} maxRotation={3}>
-                  <div className="bg-zinc-900/50 border border-zinc-800 p-6 flex flex-col md:flex-row items-center justify-between hover:border-yellow-500/50 transition-all hover:bg-zinc-900 relative overflow-hidden">
+                  <div className="bg-zinc-900/50 border border-zinc-800 p-6 flex flex-col md:flex-row items-center justify-between hover:border-yellow-500/50 transition-all hover:bg-zinc-900 relative overflow-hidden" data-cursor-hover>
                     <div className="absolute -right-4 -top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
                       <Calendar className="text-yellow-500/10 w-24 h-24 rotate-12" />
                     </div>
@@ -1130,14 +1150,14 @@ export default function App() {
       </section>
 
       {/* CONTACT US SECTION */}
-      <section className="pt-12 pb-16 relative">
+      <section ref={contactRef} className="pt-12 pb-16 relative">
         <div className="container mx-auto px-6">
           <SectionHeader
             title="Contact Us"
             subtitle="Get In Touch"
           />
 
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
             <TiltContainer scale={1.01} maxRotation={2}>
               <div className="bg-zinc-900 p-8 rounded-sm border border-zinc-800 relative overflow-hidden group">
                 <div className="absolute -right-12 -top-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">

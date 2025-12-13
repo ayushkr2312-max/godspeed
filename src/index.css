@@ -339,10 +339,11 @@ div {
   }
 
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
 .animate-scroll-text {
-  animation: scroll-text 8s linear infinite;
+  animation: scroll-text 30s linear infinite;
+  will-change: transform;
 }
