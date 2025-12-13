@@ -9,12 +9,15 @@ html {
   background-color: #000;
 }
 
-body,
-body *,
-a,
-button,
-[role="button"] {
-  cursor: none !important;
+@media (hover: hover) and (min-width: 768px) {
+
+  body,
+  body *,
+  a,
+  button,
+  [role="button"] {
+    cursor: none !important;
+  }
 }
 
 body {
