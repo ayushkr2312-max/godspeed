@@ -331,3 +331,18 @@ div {
 .border-breathe {
   animation: breathe-border 3s infinite ease-in-out;
 }
+
+/* Marquee Animation */
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-text {
+  animation: scroll-text 8s linear infinite;
+}

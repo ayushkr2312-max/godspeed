@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Trophy, Users, Calendar, ArrowRight, Twitter, Twitch, Youtube, Instagram, Menu, X, ChevronDown, Gamepad2, Zap, Target } from 'lucide-react';
+import { Trophy, Users, Calendar, ArrowRight, Twitter, Twitch, Youtube, Instagram, Menu, X, ChevronDown, ChevronRight, Gamepad2, Zap, Target } from 'lucide-react';
 import CustomCursor from './components/CustomCursor';
 import HUDOverlay from './components/HUDOverlay';
 import LogoImg from './assets/logo.svg';
@@ -71,7 +71,7 @@ const SectionHeader = ({ title, subtitle }) => (
 
 const PlayerCard = ({ player }) => (
   <div className="relative">
-    <div className="group relative h-96 w-full overflow-hidden bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:border-yellow-500/50 hover:-translate-y-2 holographic" data-aos="zoom-in">
+    <div className="group relative h-96 group-hover:h-[28rem] w-full overflow-hidden bg-zinc-900 border border-zinc-800 transition-all duration-300 hover:border-yellow-500/50 hover:-translate-y-2 holographic" data-aos="zoom-in">
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-90" />
       <img
         src={player.img}
@@ -81,7 +81,7 @@ const PlayerCard = ({ player }) => (
       {/* Persistent low opacity film */}
       <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
 
-      <div className="absolute bottom-0 left-0 w-full h-56 p-6 z-20 transform transition-transform duration-300 translate-y-12 group-hover:-translate-y-24">
+      <div className="absolute bottom-0 left-0 w-full h-56 p-6 z-20 transform transition-transform duration-300 translate-y-12 group-hover:-translate-y-28">
         {/* Strip backing for legibility */}
         <div className="absolute inset-0 bg-black/80 z-0 transition-opacity duration-300 group-hover:opacity-0"></div>
 
@@ -100,9 +100,12 @@ const PlayerCard = ({ player }) => (
           <div className="relative z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
             {['PLAYER 1', 'PLAYER 2', 'PLAYER 3'].map((pName, i) => (
               <div key={i} className="group/player flex items-center gap-4">
-                <h3 className="text-2xl font-black italic text-white uppercase tracking-tighter cursor-pointer hover:text-yellow-500 transition-colors [text-shadow:0_0_4px_rgba(0,0,0,0.8)]">
-                  {pName}
-                </h3>
+                <div className="flex items-center gap-2 border-b border-white/40 hover:border-yellow-500 transition-colors pb-0.5 cursor-pointer w-fit group/text">
+                  <h3 className="text-2xl font-black italic text-white uppercase tracking-tighter [text-shadow:0_0_4px_rgba(0,0,0,0.8)] group-hover/text:text-yellow-500 transition-colors">
+                    {pName}
+                  </h3>
+                  <ChevronRight className="w-5 h-5 text-yellow-500 opacity-0 group-hover/text:opacity-100 -translate-x-2 group-hover/text:translate-x-0 transition-all duration-300" />
+                </div>
                 {/* Social Icons - Reveal on Text Hover */}
                 <div className="flex items-center gap-6 bg-black/90 px-5 py-2.5 rounded border border-zinc-800 opacity-0 group-hover/player:opacity-100 pointer-events-none group-hover/player:pointer-events-auto transition-all duration-300 translate-x-[-10px] group-hover/player:translate-x-0 shadow-lg">
                   <a href="#" className="text-zinc-400 hover:text-white transition-colors hover:scale-110 transform duration-200" title="X">
@@ -300,6 +303,29 @@ const SpeedTrail = ({ cursorRef }) => {
   }, []);
 
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ width: '100%', height: '100%' }} />;
+};
+
+const InfiniteMarquee = () => {
+  return (
+    <div className="w-full overflow-hidden bg-black/50 border-y border-zinc-900 py-10 relative group">
+      {/* Gradient Overlay for depth */}
+      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10"></div>
+      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent z-10"></div>
+
+      <div className="flex whitespace-nowrap animate-scroll-text group-hover:[animation-play-state:paused] cursor-default">
+        {[...Array(8)].map((_, i) => (
+          <div key={i} className="flex items-center px-8">
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
+            <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default function App() {
@@ -804,6 +830,11 @@ export default function App() {
               <div className="w-[50px] h-[5px] bg-yellow-500 transform -skew-x-12"></div>
             </div>
           </div>
+        </div>
+
+        {/* Interactive Spacer */}
+        <div className="mt-32 mb-4">
+          <InfiniteMarquee />
         </div>
       </section>
 
