@@ -518,6 +518,7 @@ export default function App() {
 
   return (
     <div id="warp-container" className="bg-black min-h-screen text-white font-sans selection:bg-yellow-500 selection:text-black overflow-x-hidden md:cursor-none">
+      <div className="godspeed-rail"></div>
       <div className="hidden md:block">
         <CustomCursor zoomRef={zoomRef} />
         <HUDOverlay />
