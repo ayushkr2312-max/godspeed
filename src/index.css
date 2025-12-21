@@ -423,6 +423,6 @@ div {
 }
 
 .animate-scroll-text {
-  animation: scroll-text 60s linear infinite;
+  animation: scroll-text 90s linear infinite;
   will-change: transform;
 }
