@@ -11,10 +11,9 @@ import 'aos/dist/aos.css';
 import Lenis from '@studio-freight/lenis';
 
 
-// --- ASSETS & CONFIG ---
-// Local logo asset
 const LOGO_URL = LogoImg;
 
+// color palette
 const THEME = {
   gold: "#FFD700",
   dark: "#0a0a0a",
@@ -24,14 +23,15 @@ const THEME = {
   accent: "#facc15"
 };
 
+// team roster data
 const ROSTER = [
   { id: 1, ign: "ROCKET LEAGUE", name: "APAC", img: "https://i0.wp.com/www.vitaplayer.co.uk/wp-content/uploads/2021/05/rocketleague-rocketpass5-psyonix.jpg?fit=1920%2C1080&ssl=1" },
   { id: 2, ign: "SSBU", name: "NA", img: "https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/H2x1_NSwitch_SuperSmashBrosUltimate_02.jpg" },
   { id: 3, ign: "COMING SOON", name: "", img: "https://i.ibb.co/cczxzJzy/unnamed.jpg" },
 ];
 
+// match schedule - TODO: hook this up to backend later
 const MATCHES = {
-  // Live stream section will use a Twitch embed
   upcoming: [
     { id: 3, opponent: "RLCS Open-2", date: "JAN 4", time: "20:00 EST", tournament: "Rocket League", status: "UPCOMING" },
     { id: 4, opponent: "SSBU Regional", date: "JAN 7", time: "18:00 EST", tournament: "SSBU", status: "UPCOMING" },
@@ -42,7 +42,7 @@ const MATCHES = {
   ]
 };
 
-// --- COMPONENTS ---
+// custom icons since lucide doesn't have everything
 
 const XIcon = ({ size = 24, className = "" }) => (
   <svg
@@ -106,11 +106,9 @@ const PlayerCard = ({ player }) => (
         alt={player.ign}
         className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 blur-[0.75px] group-hover:blur-none"
       />
-      {/* Persistent low opacity film */}
       <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
 
       <div className="absolute bottom-0 left-0 w-full h-56 p-6 z-20 transform transition-transform duration-300 translate-y-12 group-hover:-translate-y-28">
-        {/* Strip backing for legibility */}
         <div className="absolute inset-0 bg-black/80 z-0 transition-opacity duration-300 group-hover:opacity-0"></div>
 
         <div className="overflow-hidden mb-2 relative z-10">
@@ -134,10 +132,8 @@ const PlayerCard = ({ player }) => (
                   </h3>
                   <ChevronRight className="w-5 h-5 text-yellow-500 opacity-0 group-hover/text:opacity-100 -translate-x-2 group-hover/text:translate-x-0 transition-all duration-300" />
                 </div>
-                {/* Social Icons - Reveal on Text Hover */}
                 <div className="flex items-center gap-6 bg-black/90 px-5 py-2.5 rounded border border-zinc-800 opacity-0 group-hover/player:opacity-100 pointer-events-none group-hover/player:pointer-events-auto transition-all duration-300 translate-x-[-10px] group-hover/player:translate-x-0 shadow-lg">
                   <a href="#" className="text-zinc-400 hover:text-white transition-colors hover:scale-110 transform duration-200" title="X">
-                    {/* Using X icon */}
                     <X size={22} />
                   </a>
                   <a href="#" className="text-zinc-400 hover:text-[#9146FF] transition-colors hover:scale-110 transform duration-200" title="Twitch">
@@ -153,12 +149,10 @@ const PlayerCard = ({ player }) => (
         )}
       </div>
 
-      {/* Decorative Elements */}
       <div className="absolute top-4 right-4 z-20">
         <Zap className="text-yellow-500 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
     </div>
-    {/* Yellow line below the card */}
     <div className="h-1 bg-yellow-500 w-full mt-4" />
   </div>
 );
@@ -244,7 +238,7 @@ const SpeedTrail = ({ cursorRef }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Set actual size for high DPI
+    // handle high DPI displays
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
 
@@ -393,13 +387,13 @@ export default function App() {
   const zoomCursorRef = useRef({ x: 0, y: 0, active: false });
   const contactRef = useRef(null);
 
-  // Trigger animations on mount
+  // kick off animations when page loads
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    // Initialize Lenis smooth scroll
+    // smooth scroll setup
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -783,7 +777,7 @@ export default function App() {
 
             <div className={`hero-initial mb-12 ${mounted ? 'hero-subtitle animate' : ''}`}>
               <TiltContainer scale={1.05} maxRotation={3}>
-                <p className="text-zinc-400 hover:text-white transition-all duration-300 cursor-default text-lg md:text-xl tracking-widest uppercase max-w-xl mx-auto hover:[text-shadow:0_0_20px_rgba(234,179,8,0.5)]">
+                <p className="text-zinc-300 hover:text-white transition-all duration-300 cursor-default text-lg md:text-xl tracking-widest uppercase max-w-xl mx-auto hover:[text-shadow:0_0_20px_rgba(234,179,8,0.5)]">
                   BUILT ON CULTURE. DRIVEN TO COMPETE.
                 </p>
               </TiltContainer>
@@ -793,7 +787,7 @@ export default function App() {
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('roster')}
-                  className="cyber-glitch group relative px-8 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white"
+                  className="cyber-glitch group relative px-7 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Meet The Team</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -802,7 +796,7 @@ export default function App() {
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('schedule')}
-                  className="cyber-glitch group relative px-8 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white"
+                  className="cyber-glitch group relative px-7 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Schedule</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -825,7 +819,7 @@ export default function App() {
           {[XIcon, Twitch, Youtube, DiscordIcon].map((Icon, i) => {
             // Calculate styles based on state
             let style = {};
-            let baseClasses = `fixed pointer-events-auto w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/90 border border-yellow-500/50 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 z-50 hero-initial ${mounted ? 'hero-social animate' : ''}`;
+            let baseClasses = `fixed pointer-events-auto w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/90 border-2 border-yellow-500/70 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 z-50 hero-initial ${mounted ? 'hero-social animate' : ''}`;
 
             if (!scrolled) {
               // Hero Positions

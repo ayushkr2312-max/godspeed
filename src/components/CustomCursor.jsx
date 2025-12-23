@@ -36,7 +36,6 @@ const CustomCursor = ({ zoomRef }) => {
       if (cursor) {
         cursor.style.transform = `translate(${clientX}px, ${clientY}px)`;
       }
-      // Check variant on mouse move
       updateVariant();
     };
 
@@ -58,7 +57,6 @@ const CustomCursor = ({ zoomRef }) => {
     };
 
     const handleScroll = () => {
-      // Check variant on scroll
       updateVariant();
     };
 
@@ -71,7 +69,7 @@ const CustomCursor = ({ zoomRef }) => {
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [zoomRef]); // Dependency on zoomRef
+  }, [zoomRef]);
 
   return (
     <>
@@ -92,7 +90,6 @@ const CustomCursor = ({ zoomRef }) => {
             opacity: 0;
         }
         .start-point {
-            /* Adjust so the tip of the arrow is at 0,0 */
             transform-origin: top left;
         }
         .cursor-svg {
@@ -109,13 +106,13 @@ const CustomCursor = ({ zoomRef }) => {
         }
         /* Dot Mode Styles */
         .cursor-svg.dot {
-            transform: scale(0.5); /* Shrink to dot size */
+            transform: scale(0.5);
             fill: #eab308;
-            stroke: black; /* Added stroke per request */
+            stroke: black;
             stroke-width: 2px;
         }
         .cursor-svg.dot.hovered {
-            transform: scale(0.8); /* Grow slightly on hover */
+            transform: scale(0.8);
         }
       `}</style>
       <div ref={cursorRef} className={`custom-cursor-arrow ${variant === 'hidden' ? 'hidden' : ''}`}>
