@@ -10,33 +10,52 @@ const CustomCursor = ({ zoomRef }) => {
   useEffect(() => {
     const cursor = cursorRef.current;
 
-    const updateVariant = () => {
-      if (!zoomRef || !zoomRef.current) return;
+    // Use refs for values accessed in the animation loop to avoid re-renders/stale closures
+    const mousePos = useRef({ x: -100, y: -100 });
+    const isHoveringInteractive = useRef(false);
 
-      const rect = zoomRef.current.getBoundingClientRect();
-      const y = mouseYRef.current;
+    // Tweak: Only check bounds occasionally or just use rAF? 
+    // rAF is safer for performance than mousemove since mousemove can fire 1000Hz+
 
-      // Strict spatial check:
-      if (y < rect.top) {
-        // Mouse is physically above the banner
-        setVariant(v => v !== 'default' ? 'default' : v);
-      } else if (y > rect.bottom) {
-        // Mouse is physically below the banner
-        setVariant(v => v !== 'dot' ? 'dot' : v);
-      } else {
-        // Inside vertical bounds
-        setVariant(v => v !== 'hidden' ? 'hidden' : v);
+    // Loop logic
+    let rAFId = null;
+
+    const loop = () => {
+      // 1. Update Cursor Position
+      const { x, y } = mousePos.current;
+      if (cursor) {
+        // Using translate3d for hardware acceleration
+        // Using fixed position, so we just use clientX/Y
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       }
+
+      // 2. Update Variant Logic
+      // We only read layout (getBoundingClientRect) once per frame max, which is acceptable
+      if (zoomRef && zoomRef.current) {
+        const rect = zoomRef.current.getBoundingClientRect();
+
+        let newVariant = 'default';
+
+        // Priority to "hidden" (inside the box)
+        if (y >= rect.top && y <= rect.bottom) {
+          newVariant = 'hidden';
+        } else if (y > rect.bottom) {
+          newVariant = 'dot';
+        } else {
+          newVariant = 'default';
+        }
+
+        // Update state only if changed to avoid React render cycles
+        setVariant(prev => prev !== newVariant ? newVariant : prev);
+      }
+
+      rAFId = requestAnimationFrame(loop);
     };
 
+    // Event Listeners
     const moveCursor = (e) => {
-      const { clientX, clientY } = e;
-      mouseYRef.current = clientY;
-
-      if (cursor) {
-        cursor.style.transform = `translate(${clientX}px, ${clientY}px)`;
-      }
-      updateVariant();
+      // Just store coordinates, don't do layout work here
+      mousePos.current = { x: e.clientX, y: e.clientY };
     };
 
     const handleMouseOver = (e) => {
@@ -51,23 +70,24 @@ const CustomCursor = ({ zoomRef }) => {
 
       if (isInteractive) {
         setHovered(true);
+        isHoveringInteractive.current = true;
       } else {
         setHovered(false);
+        isHoveringInteractive.current = false;
       }
-    };
-
-    const handleScroll = () => {
-      updateVariant();
     };
 
     window.addEventListener('mousemove', moveCursor);
     window.addEventListener('mouseover', handleMouseOver);
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Use stored scroll listener if needed, but rAF handles layout checks naturally now
+
+    // Start loop
+    rAFId = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
-      window.removeEventListener('scroll', handleScroll);
+      if (rAFId) cancelAnimationFrame(rAFId);
     };
   }, [zoomRef]);
 
@@ -115,7 +135,7 @@ const CustomCursor = ({ zoomRef }) => {
             transform: scale(0.8);
         }
       `}</style>
-      <div ref={cursorRef} className={`custom-cursor-arrow ${variant === 'hidden' ? 'hidden' : ''}`}>
+      <div ref={cursorRef} className={`custom-cursor-arrow ${variant === 'hidden' ? 'hidden' : ''}`} style={{ willChange: 'transform' }}>
         <svg
           className={`cursor-svg ${hovered ? 'hovered' : ''} ${variant === 'dot' ? 'dot' : ''}`}
           viewBox="0 0 24 24"

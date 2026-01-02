@@ -262,11 +262,16 @@ const SpeedTrail = ({ cursorRef }) => {
     let animationFrameId;
 
     const animate = () => {
-      const { x, y, active } = cursorRef.current;
+      // Use client coordinates from ref
+      const { clientX, clientY, active } = cursorRef.current;
       const points = pointsRef.current;
 
       // Add point if active
       if (active) {
+        // Calculate local position relative to canvas ONCE per frame
+        const rect = canvas.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
         points.push({ x, y, age: 1.0 });
       }
 
@@ -384,7 +389,7 @@ export default function App() {
   const zoomSectionTop = useRef(null);
   const lenisRef = useRef(null);
   const [mounted, setMounted] = useState(false);
-  const zoomCursorRef = useRef({ x: 0, y: 0, active: false });
+  const zoomCursorRef = useRef({ clientX: 0, clientY: 0, active: false });
   const contactRef = useRef(null);
 
   // kick off animations when page loads
@@ -966,9 +971,10 @@ export default function App() {
         onMouseEnter={() => zoomCursorRef.current.active = true}
         onMouseLeave={() => zoomCursorRef.current.active = false}
         onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          zoomCursorRef.current.x = e.clientX - rect.left;
-          zoomCursorRef.current.y = e.clientY - rect.top;
+          // Store raw client coordinates to avoid forced reflows (getBoundingClientRect) here
+          // The SpeedTrail component handles the conversion in its RAF loop
+          zoomCursorRef.current.clientX = e.clientX;
+          zoomCursorRef.current.clientY = e.clientY;
           zoomCursorRef.current.active = true;
         }}
       >
