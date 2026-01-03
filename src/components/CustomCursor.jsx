@@ -11,8 +11,8 @@ const CustomCursor = ({ zoomRef }) => {
     const cursor = cursorRef.current;
 
     // Use refs for values accessed in the animation loop to avoid re-renders/stale closures
-    const mousePos = useRef({ x: -100, y: -100 });
-    const isHoveringInteractive = useRef(false);
+    let mousePos = { x: -100, y: -100 };
+    const isHoveringInteractive = { current: false };
 
     // Tweak: Only check bounds occasionally or just use rAF? 
     // rAF is safer for performance than mousemove since mousemove can fire 1000Hz+
@@ -22,7 +22,7 @@ const CustomCursor = ({ zoomRef }) => {
 
     const loop = () => {
       // 1. Update Cursor Position
-      const { x, y } = mousePos.current;
+      const { x, y } = mousePos; // Access directly from the object
       if (cursor) {
         // Using translate3d for hardware acceleration
         // Using fixed position, so we just use clientX/Y
@@ -55,7 +55,8 @@ const CustomCursor = ({ zoomRef }) => {
     // Event Listeners
     const moveCursor = (e) => {
       // Just store coordinates, don't do layout work here
-      mousePos.current = { x: e.clientX, y: e.clientY };
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
     };
 
     const handleMouseOver = (e) => {
@@ -103,7 +104,7 @@ const CustomCursor = ({ zoomRef }) => {
           left: 0;
           pointer-events: none;
           z-index: 9999;
-          transition: transform 0.1s ease-out, opacity 0.2s ease;
+          transition: opacity 0.2s ease;
           will-change: transform;
         }
         .custom-cursor-arrow.hidden {

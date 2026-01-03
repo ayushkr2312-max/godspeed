@@ -104,6 +104,7 @@ const PlayerCard = ({ player }) => (
       <img
         src={player.img}
         alt={player.ign}
+        loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0 blur-[0.75px] group-hover:blur-none"
       />
       <div className="absolute inset-0 bg-black/30 z-0 pointer-events-none"></div>
@@ -177,7 +178,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
         <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
           {/* Mini Logo for Nav */}
           <div className="w-9 h-11">
-            <img src={LogoImg} alt="GS" className="w-full h-full object-cover object-center transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" />
+            <img src={LogoImg} alt="GS" loading="lazy" className="w-full h-full object-cover object-center transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" />
           </div>
           <span className="text-xl font-black italic tracking-tighter nav-logo">
             <span className="text-yellow-500">GOD </span>
@@ -1186,6 +1187,7 @@ export default function App() {
                     <img
                       src={FounderImg}
                       alt="Founder"
+                      loading="lazy"
                       className="w-full h-auto object-contain object-center transition-transform duration-700 group-hover/image:scale-105 relative z-20"
                     />
                   </div>
@@ -1312,7 +1314,7 @@ export default function App() {
         <div className="container mx-auto px-6">
           <div className="text-center">
             <div className="flex items-center justify-center gap-4 mb-8">
-              <img src={LOGO_URL} alt="Logo" className="w-16 h-16 object-contain" />
+              <img src={LOGO_URL} alt="Logo" loading="lazy" className="w-16 h-16 object-contain" />
               <h2 className="text-4xl font-black italic tracking-tighter text-white"><span className="text-yellow-500">GOD </span><span className="text-white">SPEED</span></h2>
             </div>
             <p className="text-zinc-400 leading-relaxed mb-8 max-w-3xl mx-auto">
