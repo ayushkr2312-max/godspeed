@@ -1195,7 +1195,7 @@ export default function App() {
               </TiltContainer>
             </div>
 
-            {/* Right: Founder Message */}
+            {/* Right:Founder Message*/}
             <div className="lg:col-span-8 space-y-4" data-aos="fade-left">
               <div className="space-y-3">
                 <p className="text-zinc-300 text-base leading-relaxed hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
