@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { ls, uid } from '../utils.js';
 
-const SCENARIO_KEY = 'thub-aim-scenarios';
-const LOG_KEY = 'thub-aim';
-const PLAYER_KEY = 'thub-players';
+const PLAYERS = ['Uvinity', 'Tank', 'Hotcho'];
 const CATS = ['FLICKING', 'TRACKING', 'MICRO-ADJUST', 'SWITCHING', 'CLICK-TIMING', 'SMOOTHBOT'];
 
 const DEFAULT_SCENARIOS = [
-  { id: 'def1', name: 'VoxTargetSwitch', cat: 'FLICKING', desc: 'Wide angle flick switching', target: '7000' },
-  { id: 'def2', name: 'PGTI', cat: 'TRACKING', desc: 'Gridshot-style tracking', target: '12000' },
-  { id: 'def3', name: '1w4ts_small', cat: 'MICRO-ADJUST', desc: 'Small target micro adjustment', target: '6500' },
-  { id: 'def4', name: 'VT Switching', cat: 'SWITCHING', desc: 'Multi-target switching', target: '8000' },
-  { id: 'def5', name: 'Bounce 180', cat: 'CLICK-TIMING', desc: 'Timing + click precision', target: '5000' },
-  { id: 'def6', name: 'Smoothbot', cat: 'SMOOTHBOT', desc: 'Smooth tracking bot', target: '15000' },
+  { id: 'def1', name: 'VoxTargetSwitch',  cat: 'FLICKING',     desc: 'Wide angle flick switching',    target: '7000' },
+  { id: 'def2', name: 'PGTI',             cat: 'TRACKING',     desc: 'Gridshot-style tracking',        target: '12000' },
+  { id: 'def3', name: '1w4ts_small',      cat: 'MICRO-ADJUST', desc: 'Small target micro adjustment',  target: '6500' },
+  { id: 'def4', name: 'VT Switching',     cat: 'SWITCHING',    desc: 'Multi-target switching',         target: '8000' },
+  { id: 'def5', name: 'Bounce 180',       cat: 'CLICK-TIMING', desc: 'Timing + click precision',       target: '5000' },
+  { id: 'def6', name: 'Smoothbot',        cat: 'SMOOTHBOT',    desc: 'Smooth tracking bot',            target: '15000' },
 ];
 
+function playerSlug(name) {
+  return name.toLowerCase();
+}
+
+// ─── Editable cell ────────────────────────────────────────────
 function EditableCell({ value, onSave }) {
   const [editing, setEditing] = useState(false);
   const [val, setVal] = useState(value);
@@ -29,15 +32,24 @@ function EditableCell({ value, onSave }) {
       style={{ width: '100%', minWidth: 80 }}
     />
   );
-  return <span style={{ cursor: 'pointer', textDecoration: 'underline dotted' }} onClick={() => setEditing(true)}>{value || '—'}</span>;
+  return (
+    <span
+      style={{ cursor: 'pointer', textDecoration: 'underline dotted' }}
+      onClick={() => { setVal(value); setEditing(true); }}
+    >
+      {value || '—'}
+    </span>
+  );
 }
 
-function Scenarios() {
-  const [rows, setRows] = useState(() => ls.get(SCENARIO_KEY, DEFAULT_SCENARIOS));
+// ─── Scenarios table (per player) ────────────────────────────
+function Scenarios({ player }) {
+  const key = `thub-aim-scenarios-${playerSlug(player)}`;
+  const [rows, setRows] = useState(() => ls.get(key, DEFAULT_SCENARIOS));
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: '', cat: 'FLICKING', desc: '', target: '' });
 
-  const save = (v) => { setRows(v); ls.set(SCENARIO_KEY, v); };
+  const save = (v) => { setRows(v); ls.set(key, v); };
   const add = () => {
     if (!form.name.trim()) return;
     save([...rows, { id: uid(), ...form }]);
@@ -82,17 +94,25 @@ function Scenarios() {
         </div>
       )}
       <table className="hub-table">
-        <thead><tr>
-          <th>Scenario Name</th><th>Category</th><th>Description</th><th>Target Score</th><th></th>
-        </tr></thead>
+        <thead>
+          <tr>
+            <th>Scenario Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Target Score</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {rows.map(r => (
             <tr key={r.id}>
-              <td><EditableCell value={r.name} onSave={v => update(r.id, 'name', v)} /></td>
-              <td><EditableCell value={r.cat} onSave={v => update(r.id, 'cat', v)} /></td>
-              <td><EditableCell value={r.desc} onSave={v => update(r.id, 'desc', v)} /></td>
+              <td><EditableCell value={r.name}   onSave={v => update(r.id, 'name',   v)} /></td>
+              <td><EditableCell value={r.cat}    onSave={v => update(r.id, 'cat',    v)} /></td>
+              <td><EditableCell value={r.desc}   onSave={v => update(r.id, 'desc',   v)} /></td>
               <td><EditableCell value={r.target} onSave={v => update(r.id, 'target', v)} /></td>
-              <td><button className="btn-link" onClick={() => save(rows.filter(x => x.id !== r.id))}>[x]</button></td>
+              <td>
+                <button className="btn-link" onClick={() => save(rows.filter(x => x.id !== r.id))}>[x]</button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -101,24 +121,22 @@ function Scenarios() {
   );
 }
 
-function ProgressLog() {
-  const [logs, setLogs] = useState(() => ls.get(LOG_KEY, []));
+// ─── Progress log (per player) ────────────────────────────────
+function ProgressLog({ player }) {
+  const key = `thub-aim-log-${playerSlug(player)}`;
+  const [logs, setLogs] = useState(() => ls.get(key, []));
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ date: '', player: '', scenario: '', score: '', notes: '' });
-  const [filterPlayer, setFilterPlayer] = useState('');
-  const players = ls.get(PLAYER_KEY, ['Player 1', 'Player 2', 'Player 3']);
+  const [form, setForm] = useState({ date: '', scenario: '', score: '', notes: '' });
 
-  const save = (v) => { setLogs(v); ls.set(LOG_KEY, v); };
+  const save = (v) => { setLogs(v); ls.set(key, v); };
   const add = () => {
-    if (!form.date || !form.player || !form.scenario) return;
-    save([{ id: uid(), ...form, ts: new Date().toISOString() }, ...logs]);
-    setForm({ date: '', player: '', scenario: '', score: '', notes: '' });
+    if (!form.date || !form.scenario) return;
+    save([{ id: uid(), player, ...form, ts: new Date().toISOString() }, ...logs]);
+    setForm({ date: '', scenario: '', score: '', notes: '' });
     setShowForm(false);
   };
 
-  const filtered = [...logs]
-    .filter(l => !filterPlayer || l.player === filterPlayer)
-    .sort((a, b) => b.date > a.date ? 1 : -1);
+  const sorted = [...logs].sort((a, b) => b.date > a.date ? 1 : -1);
 
   return (
     <div>
@@ -126,12 +144,6 @@ function ProgressLog() {
         <button className="btn btn-sm" onClick={() => setShowForm(s => !s)}>
           {showForm ? '− Cancel' : '+ Add Entry'}
         </button>
-        <div className="field" style={{ marginBottom: 0 }}>
-          <select value={filterPlayer} onChange={e => setFilterPlayer(e.target.value)} style={{ fontSize: 11 }}>
-            <option value="">All Players</option>
-            {players.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-        </div>
       </div>
       {showForm && (
         <div className="inline-form mb-12">
@@ -140,24 +152,17 @@ function ProgressLog() {
               <label>Date</label>
               <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
             </div>
-            <div className="field">
-              <label>Player</label>
-              <select value={form.player} onChange={e => setForm(f => ({ ...f, player: e.target.value }))}>
-                <option value="">-- select --</option>
-                {players.map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
-            </div>
             <div className="field" style={{ flex: 2 }}>
               <label>Scenario</label>
-              <input type="text" value={form.scenario} onChange={e => setForm(f => ({ ...f, scenario: e.target.value }))} />
+              <input type="text" value={form.scenario} onChange={e => setForm(f => ({ ...f, scenario: e.target.value }))} placeholder="e.g. VoxTargetSwitch" />
             </div>
             <div className="field">
               <label>Score</label>
-              <input type="number" value={form.score} onChange={e => setForm(f => ({ ...f, score: e.target.value }))} style={{ width: 90 }} />
+              <input type="number" value={form.score} onChange={e => setForm(f => ({ ...f, score: e.target.value }))} style={{ width: 100 }} />
             </div>
             <div className="field" style={{ flex: 2 }}>
               <label>Notes</label>
-              <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
+              <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="optional" />
             </div>
           </div>
           <div className="flex gap-8 mt-8">
@@ -166,15 +171,16 @@ function ProgressLog() {
           </div>
         </div>
       )}
-      {filtered.length === 0 && <div className="empty-state">No entries logged.</div>}
-      {filtered.length > 0 && (
+      {sorted.length === 0 && <div className="empty-state">No entries logged for {player}.</div>}
+      {sorted.length > 0 && (
         <table className="hub-table">
-          <thead><tr><th>Date</th><th>Player</th><th>Scenario</th><th>Score</th><th>Notes</th><th></th></tr></thead>
+          <thead>
+            <tr><th>Date</th><th>Scenario</th><th>Score</th><th>Notes</th><th></th></tr>
+          </thead>
           <tbody>
-            {filtered.map(r => (
+            {sorted.map(r => (
               <tr key={r.id}>
                 <td>{r.date}</td>
-                <td>{r.player}</td>
                 <td>{r.scenario}</td>
                 <td style={{ fontWeight: 600 }}>{r.score}</td>
                 <td>{r.notes}</td>
@@ -188,17 +194,50 @@ function ProgressLog() {
   );
 }
 
-export default function AimTraining() {
+// ─── Per-player panel ─────────────────────────────────────────
+function PlayerAim({ player }) {
   const [tab, setTab] = useState('SCENARIOS');
   return (
     <div>
-      <h2 className="hub-section-title">AIM TRAINING (KOVAAKS)</h2>
       <div className="sub-tabs">
         {['SCENARIOS', 'PROGRESS LOG'].map(t => (
-          <button key={t} className={`sub-tab${tab === t ? ' active' : ''}`} onClick={() => setTab(t)}>{t}</button>
+          <button
+            key={t}
+            className={`sub-tab${tab === t ? ' active' : ''}`}
+            onClick={() => setTab(t)}
+          >
+            {t}
+          </button>
         ))}
       </div>
-      {tab === 'SCENARIOS' ? <Scenarios /> : <ProgressLog />}
+      {tab === 'SCENARIOS'    && <Scenarios    key={player} player={player} />}
+      {tab === 'PROGRESS LOG' && <ProgressLog  key={player} player={player} />}
+    </div>
+  );
+}
+
+// ─── Root ─────────────────────────────────────────────────────
+export default function AimTraining() {
+  const [activePlayer, setActivePlayer] = useState(PLAYERS[0]);
+
+  return (
+    <div>
+      <h2 className="hub-section-title">AIM TRAINING (KOVAAKS)</h2>
+
+      {/* Player tabs */}
+      <div className="sub-tabs" style={{ marginBottom: 20 }}>
+        {PLAYERS.map(p => (
+          <button
+            key={p}
+            className={`sub-tab${activePlayer === p ? ' active' : ''}`}
+            onClick={() => setActivePlayer(p)}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
+
+      <PlayerAim key={activePlayer} player={activePlayer} />
     </div>
   );
 }
