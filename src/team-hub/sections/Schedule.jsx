@@ -6,7 +6,7 @@ const TZ_KEY = 'thub-timezone';
 const TYPES = ['PRACTICE', 'SCRIM', 'TOURNAMENT', 'MEETING', 'VOD'];
 const TIMEZONES = ['EST', 'CST', 'MST', 'PST', 'GMT', 'CET', 'IST'];
 
-const UPCOMING_TYPES = ['SCRIM', 'TOURNAMENT'];
+const UPCOMING_TYPES = ['PRACTICE', 'SCRIM', 'TOURNAMENT', 'MEETING', 'VOD'];
 
 export default function Schedule() {
   const [events, setEvents] = useState(() => ls.get(KEY, []));
@@ -15,6 +15,8 @@ export default function Schedule() {
   const [expanded, setExpanded] = useState(null);
   const [timezone, setTimezone] = useState(() => ls.get(TZ_KEY, 'EST'));
   const [form, setForm] = useState({ day: '', time: '', name: '', type: 'PRACTICE' });
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
 
   const weekStart = getWeekStart(weekOffset);
   const days = weekDates(weekStart);
@@ -30,16 +32,20 @@ export default function Schedule() {
     setShowForm(false);
   };
 
-  // Upcoming events: future dates only, only SCRIM and TOURNAMENT
+  // Upcoming events: all types from today onwards, grouped by type
   const upcoming = events
-    .filter(e => UPCOMING_TYPES.includes(e.type) && e.day >= today)
+    .filter(e => e.day >= today)
     .sort((a, b) => {
       if (a.day !== b.day) return a.day > b.day ? 1 : -1;
       return a.time > b.time ? 1 : -1;
     });
 
-  const upcomingScrims = upcoming.filter(e => e.type === 'SCRIM');
-  const upcomingTournaments = upcoming.filter(e => e.type === 'TOURNAMENT');
+  // Group by type, preserving TYPES order
+  const upcomingByType = TYPES.reduce((acc, t) => {
+    const items = upcoming.filter(e => e.type === t);
+    if (items.length) acc[t] = items;
+    return acc;
+  }, {});
 
   return (
     <div>
@@ -116,7 +122,7 @@ export default function Schedule() {
               )}
               {dayEvents.map(ev => (
                 <div key={ev.id}>
-                  <div className="sched-event" onClick={() => setExpanded(expanded === ev.id ? null : ev.id)}>
+                  <div className="sched-event" onClick={() => { setExpanded(expanded === ev.id ? null : ev.id); setEditingId(null); }}>
                     <div className="sched-event-type">[{ev.type}]</div>
                     <div style={{ fontSize: 13 }}>
                       {ev.time && <span style={{ color: 'var(--muted)' }}>{ev.time} {ev.timezone || timezone} </span>}
@@ -125,17 +131,52 @@ export default function Schedule() {
                   </div>
                   {expanded === ev.id && (
                     <div className="sched-event-expanded">
-                      <div style={{ color: 'var(--muted)', marginBottom: 6 }}>
-                        {ev.type} · {ev.time ? `${ev.time} ${ev.timezone || timezone}` : 'no time'}
-                      </div>
-                      <div style={{ marginBottom: 6, fontSize: 14 }}>{ev.name}</div>
-                      <button
-                        className="btn-link"
-                        style={{ color: '#cc4444' }}
-                        onClick={() => { save(events.filter(x => x.id !== ev.id)); setExpanded(null); }}
-                      >
-                        [delete]
-                      </button>
+                      {editingId === ev.id ? (
+                        // ── Edit mode ──
+                        <div>
+                          <div className="field-row" style={{ marginBottom: 8 }}>
+                            <div className="field">
+                              <label>Day</label>
+                              <select value={editForm.day} onChange={e => setEditForm(f => ({ ...f, day: e.target.value }))}>
+                                {days.map((d, i) => <option key={isoDate(d)} value={isoDate(d)}>{DAYS[i]} {d.getDate()}</option>)}
+                              </select>
+                            </div>
+                            <div className="field">
+                              <label>Time</label>
+                              <input type="time" value={editForm.time} onChange={e => setEditForm(f => ({ ...f, time: e.target.value }))} />
+                            </div>
+                            <div className="field" style={{ flex: 2 }}>
+                              <label>Name</label>
+                              <input type="text" value={editForm.name} onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} />
+                            </div>
+                            <div className="field">
+                              <label>Type</label>
+                              <select value={editForm.type} onChange={e => setEditForm(f => ({ ...f, type: e.target.value }))}>
+                                {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                              </select>
+                            </div>
+                          </div>
+                          <div className="flex gap-8">
+                            <button className="btn-link" style={{ color: 'var(--accent)' }} onClick={() => {
+                              save(events.map(x => x.id === ev.id ? { ...x, ...editForm } : x));
+                              setEditingId(null);
+                            }}>[save]</button>
+                            <button className="btn-link" onClick={() => setEditingId(null)}>[cancel]</button>
+                          </div>
+                        </div>
+                      ) : (
+                        // ── View mode ──
+                        <div>
+                          <div style={{ color: 'var(--muted)', marginBottom: 6 }}>
+                            {ev.type} · {ev.time ? `${ev.time} ${ev.timezone || timezone}` : 'no time'}
+                          </div>
+                          <div style={{ marginBottom: 8, fontSize: 14 }}>{ev.name}</div>
+                          <div className="flex gap-8">
+                            <button className="btn-link" onClick={() => { setEditingId(ev.id); setEditForm({ day: ev.day, time: ev.time || '', name: ev.name, type: ev.type }); }}>[edit]</button>
+                            <button className="btn-link" style={{ color: '#cc4444' }} onClick={() => { save(events.filter(x => x.id !== ev.id)); setExpanded(null); }}>[delete]</button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -149,29 +190,32 @@ export default function Schedule() {
       <div style={{ marginTop: 32 }}>
         <h2 className="hub-section-title">UPCOMING EVENTS</h2>
 
-        {upcomingScrims.length === 0 && upcomingTournaments.length === 0 && (
-          <div className="empty-state">No upcoming scrims or tournaments scheduled.</div>
+        {Object.keys(upcomingByType).length === 0 && (
+          <div className="empty-state">No upcoming events scheduled.</div>
         )}
 
-        {upcomingScrims.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
+        {Object.entries(upcomingByType).map(([type, items]) => (
+          <div key={type} style={{ marginBottom: 28 }}>
             <div style={{
-              fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em',
-              color: 'var(--muted)', marginBottom: 8, paddingBottom: 4,
-              borderBottom: '1px solid var(--border)'
+              fontSize: 15,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              color: 'var(--text)',
+              marginBottom: 10,
+              paddingBottom: 8,
+              paddingLeft: 10,
+              borderBottom: '1px solid var(--border)',
+              borderLeft: '3px solid var(--accent)',
             }}>
-              Scrims
+              {type}
             </div>
             <table className="hub-table">
               <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Event</th>
-                </tr>
+                <tr><th>Date</th><th>Time</th><th>Event</th></tr>
               </thead>
               <tbody>
-                {upcomingScrims.map(ev => (
+                {items.map(ev => (
                   <tr key={ev.id}>
                     <td style={{ whiteSpace: 'nowrap' }}>{ev.day}</td>
                     <td style={{ whiteSpace: 'nowrap', color: 'var(--muted)' }}>
@@ -183,39 +227,7 @@ export default function Schedule() {
               </tbody>
             </table>
           </div>
-        )}
-
-        {upcomingTournaments.length > 0 && (
-          <div>
-            <div style={{
-              fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.12em',
-              color: 'var(--muted)', marginBottom: 8, paddingBottom: 4,
-              borderBottom: '1px solid var(--border)'
-            }}>
-              Tournaments
-            </div>
-            <table className="hub-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Event</th>
-                </tr>
-              </thead>
-              <tbody>
-                {upcomingTournaments.map(ev => (
-                  <tr key={ev.id}>
-                    <td style={{ whiteSpace: 'nowrap' }}>{ev.day}</td>
-                    <td style={{ whiteSpace: 'nowrap', color: 'var(--muted)' }}>
-                      {ev.time ? `${ev.time} ${ev.timezone || timezone}` : '—'}
-                    </td>
-                    <td>{ev.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );

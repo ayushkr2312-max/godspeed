@@ -46,6 +46,8 @@ function MacroNotesList({ storageKey }) {
   const [search, setSearch] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: '', author: '', body: '', imageUrl: '' });
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({});
 
   const save = (v) => { setNotes(v); ls.set(storageKey, v); };
   const add = () => {
@@ -54,6 +56,8 @@ function MacroNotesList({ storageKey }) {
     setForm({ title: '', author: '', body: '', imageUrl: '' });
     setShowForm(false);
   };
+  const startEdit = (n) => { setEditingId(n.id); setEditForm({ title: n.title, author: n.author || '', body: n.body, imageUrl: n.imageUrl || '' }); };
+  const commitEdit = (id) => { save(notes.map(n => n.id === id ? { ...n, ...editForm } : n)); setEditingId(null); };
 
   const filtered = notes.filter(n =>
     !search || n.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -66,53 +70,46 @@ function MacroNotesList({ storageKey }) {
         <button className="btn btn-sm" onClick={() => setShowForm(s => !s)}>
           {showForm ? '− Cancel' : '+ New Note'}
         </button>
-        <input
-          className="search-input"
-          style={{ marginBottom: 0, flex: 1, maxWidth: 260 }}
-          placeholder="search notes..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
+        <input className="search-input" style={{ marginBottom: 0, flex: 1, maxWidth: 260 }} placeholder="search notes..." value={search} onChange={e => setSearch(e.target.value)} />
       </div>
       {showForm && (
         <div className="inline-form mb-12">
           <div className="field-row">
-            <div className="field" style={{ flex: 2 }}>
-              <label>Title</label>
-              <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="note title" />
-            </div>
-            <div className="field">
-              <label>Author Tag</label>
-              <input type="text" value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} placeholder="COACH" style={{ width: 90 }} />
-            </div>
+            <div className="field" style={{ flex: 2 }}><label>Title</label><input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="note title" /></div>
+            <div className="field"><label>Author Tag</label><input type="text" value={form.author} onChange={e => setForm(f => ({ ...f, author: e.target.value }))} placeholder="COACH" style={{ width: 90 }} /></div>
           </div>
-          <div className="field mb-8">
-            <label>Body</label>
-            <textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} placeholder="strategy notes..." />
-          </div>
-          <div className="field mb-8">
-            <label>Image URL (optional — Discord, Imgur, etc.)</label>
-            <input type="text" value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} placeholder="https://cdn.discordapp.com/..." />
-          </div>
-          <div className="flex gap-8">
-            <button className="btn btn-sm btn-accent" onClick={add}>Save</button>
-            <button className="btn btn-sm" onClick={() => setShowForm(false)}>Cancel</button>
-          </div>
+          <div className="field mb-8"><label>Body</label><textarea value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} placeholder="strategy notes..." /></div>
+          <div className="field mb-8"><label>Image URL (optional)</label><input type="text" value={form.imageUrl} onChange={e => setForm(f => ({ ...f, imageUrl: e.target.value }))} placeholder="https://cdn.discordapp.com/..." /></div>
+          <div className="flex gap-8"><button className="btn btn-sm btn-accent" onClick={add}>Save</button><button className="btn btn-sm" onClick={() => setShowForm(false)}>Cancel</button></div>
         </div>
       )}
       {filtered.length === 0 && <div className="empty-state">No notes yet.</div>}
       {filtered.map(n => (
         <div className="card" key={n.id}>
-          <div className="card-header">
-            <span className="card-title">{n.title}</span>
-            <button className="btn-link" onClick={() => save(notes.filter(x => x.id !== n.id))}>[delete]</button>
-          </div>
-          <div className="card-meta">
-            {n.author && <span className="badge">[{n.author.toUpperCase()}]</span>}
-            <span>{fmtTs(n.ts)}</span>
-          </div>
-          {n.body && <div className="card-body">{n.body}</div>}
-          {n.imageUrl && <ImagePreview url={n.imageUrl} />}
+          {editingId === n.id ? (
+            <div>
+              <div className="field-row mb-8">
+                <div className="field" style={{ flex: 2 }}><label>Title</label><input type="text" value={editForm.title} onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))} /></div>
+                <div className="field"><label>Author</label><input type="text" value={editForm.author} onChange={e => setEditForm(f => ({ ...f, author: e.target.value }))} style={{ width: 90 }} /></div>
+              </div>
+              <div className="field mb-8"><label>Body</label><textarea value={editForm.body} onChange={e => setEditForm(f => ({ ...f, body: e.target.value }))} /></div>
+              <div className="field mb-8"><label>Image URL</label><input type="text" value={editForm.imageUrl} onChange={e => setEditForm(f => ({ ...f, imageUrl: e.target.value }))} /></div>
+              <div className="flex gap-8"><button className="btn btn-sm btn-accent" onClick={() => commitEdit(n.id)}>Save</button><button className="btn btn-sm" onClick={() => setEditingId(null)}>Cancel</button></div>
+            </div>
+          ) : (
+            <>
+              <div className="card-header">
+                <span className="card-title">{n.title}</span>
+                <div className="flex gap-8">
+                  <button className="btn-link" onClick={() => startEdit(n)}>[edit]</button>
+                  <button className="btn-link" onClick={() => save(notes.filter(x => x.id !== n.id))}>[delete]</button>
+                </div>
+              </div>
+              <div className="card-meta">{n.author && <span className="badge">[{n.author.toUpperCase()}]</span>}<span>{fmtTs(n.ts)}</span></div>
+              {n.body && <div className="card-body">{n.body}</div>}
+              {n.imageUrl && <ImagePreview url={n.imageUrl} />}
+            </>
+          )}
         </div>
       ))}
     </div>
