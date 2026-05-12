@@ -1,10 +1,17 @@
+import { scheduleCloudPush } from './cloudStorage.js';
+
 // ─── localStorage helpers ────────────────────────────────────
 export const ls = {
   get: (key, fallback = null) => {
     try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
     catch { return fallback; }
   },
-  set: (key, val) => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} },
+  set: (key, val) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(val));
+      scheduleCloudPush(); // sync to cloud after every write
+    } catch {}
+  },
 };
 
 // ─── Date / time ────────────────────────────────────────────
