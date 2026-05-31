@@ -116,7 +116,7 @@ const CustomCursor = ({ zoomRef }) => {
         .cursor-svg {
             width: 24px;
             height: 24px;
-            fill: #eab308; /* Yellow-500 */
+            fill: #F5C518; /* brand yellow */
             stroke: black;
             stroke-width: 1.5px;
             filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
@@ -128,7 +128,7 @@ const CustomCursor = ({ zoomRef }) => {
         /* Dot Mode Styles */
         .cursor-svg.dot {
             transform: scale(0.5);
-            fill: #eab308;
+            fill: #F5C518;
             stroke: black;
             stroke-width: 2px;
         }

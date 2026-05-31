@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Trophy, Users, Calendar, ArrowRight, Twitch, Youtube, Menu, X, ChevronDown, ChevronRight, Gamepad2, Zap, Target } from 'lucide-react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Trophy, Users, Calendar, ArrowRight, Twitch, Youtube, Facebook, Instagram, Menu, X, ChevronDown, ChevronRight, Gamepad2, Zap, Target } from 'lucide-react';
 import CustomCursor from './components/CustomCursor';
 import HUDOverlay from './components/HUDOverlay';
 import LogoImg from './assets/logo.svg';
 import FounderImg from './assets/founder.webp';
 import TiltContainer from './components/TiltContainer';
-import BgVideo from './assets/bgvid2.webm';
+import BgVideo from '../Scene.webm';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Lenis from '@studio-freight/lenis';
@@ -15,7 +15,7 @@ const LOGO_URL = LogoImg;
 
 // color palette
 const THEME = {
-  gold: "#FFD700",
+  gold: "#F5C518",
   dark: "#0a0a0a",
   darker: "#050505",
   gray: "#1f1f1f",
@@ -71,6 +71,30 @@ const DiscordIcon = ({ size = 24, className = "" }) => (
     <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 2.077 2.077 0 0 0-.252.515 18.068 18.068 0 0 0-5.201 0 2.083 2.083 0 0 0-.251-.515.074.074 0 0 0-.078-.037 19.787 19.787 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.085 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.085 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z" />
   </svg>
 );
+
+// Outermost → innermost toward center CTAs (display order left-to-right / right-to-left)
+const HERO_SOCIALS_LEFT = [
+  { Icon: Facebook, label: 'Facebook' },
+  { Icon: Twitch, label: 'Twitch' },
+  { Icon: XIcon, label: 'X' },
+];
+const HERO_SOCIALS_RIGHT = [
+  { Icon: Youtube, label: 'YouTube' },
+  { Icon: DiscordIcon, label: 'Discord' },
+  { Icon: Instagram, label: 'Instagram' },
+];
+const HERO_SOCIALS = [...HERO_SOCIALS_LEFT, ...HERO_SOCIALS_RIGHT];
+
+// heroOffset: 1 = closest to center CTAs, 3 = outermost in hero row
+// railIdx:    0 = topmost in scrolled vertical rail, 2 = bottommost
+const HERO_SOCIALS_FIXED = [
+  { ...HERO_SOCIALS_LEFT[0],  side: 'left',  heroOffset: 3, railIdx: 0 },
+  { ...HERO_SOCIALS_LEFT[1],  side: 'left',  heroOffset: 2, railIdx: 1 },
+  { ...HERO_SOCIALS_LEFT[2],  side: 'left',  heroOffset: 1, railIdx: 2 },
+  { ...HERO_SOCIALS_RIGHT[0], side: 'right', heroOffset: 1, railIdx: 0 },
+  { ...HERO_SOCIALS_RIGHT[1], side: 'right', heroOffset: 2, railIdx: 1 },
+  { ...HERO_SOCIALS_RIGHT[2], side: 'right', heroOffset: 3, railIdx: 2 },
+];
 
 const GlitchText = ({ text, className = "" }) => {
   return (
@@ -178,7 +202,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
         <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
           {/* Mini Logo for Nav */}
           <div className="w-9 h-11">
-            <img src={LogoImg} alt="GS" loading="lazy" className="w-full h-full object-cover object-center transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" />
+            <img src={LogoImg} alt="GS" loading="lazy" className="w-full h-full object-cover object-center transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" />
           </div>
           <span className="text-xl font-black italic tracking-tighter nav-logo">
             <span className="text-yellow-500">GOD </span>
@@ -345,11 +369,11 @@ const InfiniteMarquee = () => {
         <div className="flex shrink-0 animate-scroll-text group-hover:[animation-play-state:paused]">
           {[...Array(4)].map((_, i) => (
             <div key={`g1-${i}`} className="flex items-center px-8">
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
             </div>
           ))}
@@ -358,11 +382,11 @@ const InfiniteMarquee = () => {
         <div className="flex shrink-0 animate-scroll-text group-hover:[animation-play-state:paused]" aria-hidden="true">
           {[...Array(4)].map((_, i) => (
             <div key={`g2-${i}`} className="flex items-center px-8">
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>GOD SPEED</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>CULTURE</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
-              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
+              <span className="text-8xl md:text-9xl font-black italic uppercase text-transparent transition-all duration-300 hover:text-yellow-500 hover:drop-shadow-[0_0_15px_rgba(245,197,24,0.8)]" style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)' }}>DOMINANCE</span>
               <span className="text-8xl md:text-9xl font-black italic uppercase text-yellow-500/20 px-8" style={{ WebkitTextStroke: '0px' }}>//</span>
             </div>
           ))}
@@ -392,10 +416,31 @@ export default function App() {
   const [mounted, setMounted] = useState(false);
   const zoomCursorRef = useRef({ clientX: 0, clientY: 0, active: false });
   const contactRef = useRef(null);
+  const heroCtaRowRef = useRef(null);
+  const [heroAnchor, setHeroAnchor] = useState(null);
 
   // kick off animations when page loads
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Measure the hero CTA row so the floating social buttons can flank it
+  // at the exact same vertical baseline / horizontal distance the inline
+  // flex layout would have produced. Re-measure on resize.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = heroCtaRowRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      setHeroAnchor({
+        centerX: r.left + r.width / 2,
+        centerY: r.top + r.height / 2,
+        halfWidth: r.width / 2,
+      });
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
   }, []);
 
   useEffect(() => {
@@ -528,9 +573,6 @@ export default function App() {
           <div className="streak"></div>
           <div className="streak"></div>
           <div className="streak"></div>
-          <div className="streak"></div>
-          <div className="streak"></div>
-          <div className="streak"></div>
         </div>
         <div className="streaks streaks-right">
           <div className="streak"></div>
@@ -549,15 +591,15 @@ export default function App() {
           0%, 100% {
             text-shadow: 
               0 0 25px rgba(0, 0, 0, 0.6),
-              0 0 50px rgba(255, 215, 0, 0.4),
-              0 0 75px rgba(255, 215, 0, 0.3);
+              0 0 50px rgba(245, 197, 24, 0.4),
+              0 0 75px rgba(245, 197, 24, 0.3);
           }
           50% {
             text-shadow: 
               0 0 35px rgba(0, 0, 0, 0.7),
-              0 0 70px rgba(255, 215, 0, 0.6),
-              0 0 105px rgba(255, 215, 0, 0.5),
-              0 0 140px rgba(255, 215, 0, 0.3);
+              0 0 70px rgba(245, 197, 24, 0.6),
+              0 0 105px rgba(245, 197, 24, 0.5),
+              0 0 140px rgba(245, 197, 24, 0.3);
           }
         }
         .zoom-glow {
@@ -617,8 +659,8 @@ export default function App() {
           color: transparent;
         }
         .bg-grid-pattern {
-          background-image: linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+          background-image: linear-gradient(rgba(245, 197, 24, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245, 197, 24, 0.05) 1px, transparent 1px);
           background-size: 40px 40px;
         }
         .zoom-streaks-container {
@@ -710,15 +752,19 @@ export default function App() {
         {/* Background Video */}
         <div className="absolute inset-0 z-0">
           <video
+            ref={(el) => { if (el) el.playbackRate = 0.5; }}
             autoPlay
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
+            className="absolute inset-0 w-full h-full object-cover opacity-65"
           >
             <source src={BgVideo} type="video/webm" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black from-0% via-black/45 via-[16%] to-transparent to-[42%]"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black from-0% via-black/30 via-[8%] to-transparent to-[22%] pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-l from-black from-0% via-black/30 via-[8%] to-transparent to-[22%] pointer-events-none"></div>
           <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
         </div>
 
@@ -771,29 +817,33 @@ export default function App() {
 
               {/* The "Ghost" Text (Bottom Layer - Shoots out on hover) */}
               <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:translate-x-10 group-hover:opacity-[0.15] font-black italic tracking-tighter">
-                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308' }}>GOD </span>
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #F5C518' }}>GOD </span>
                 <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white' }}>SPEED</span>
               </span>
               {/* Ghost Text - Left Direction */}
               <span className="absolute top-0 left-0 -z-10 block text-transparent opacity-0 transition-all duration-300 ease-out group-hover:-translate-x-10 group-hover:opacity-[0.15] font-black italic tracking-tighter">
-                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #eab308' }}>GOD </span>
+                <span className="text-yellow-500 brand-yellow" style={{ WebkitTextStroke: '1px #F5C518' }}>GOD </span>
                 <span className="text-white speed-text" style={{ WebkitTextStroke: '1px white' }}>SPEED</span>
               </span>
             </h1>
 
             <div className={`hero-initial mb-12 ${mounted ? 'hero-subtitle animate' : ''}`}>
               <TiltContainer scale={1.05} maxRotation={3}>
-                <p className="text-zinc-300 hover:text-white transition-all duration-300 cursor-default text-lg md:text-xl tracking-widest uppercase max-w-xl mx-auto hover:[text-shadow:0_0_20px_rgba(234,179,8,0.5)]">
+                <p className="text-zinc-300 hover:text-white transition-all duration-300 cursor-default text-lg md:text-xl tracking-widest uppercase max-w-xl mx-auto hover:[text-shadow:0_0_20px_rgba(245,197,24,0.5)]">
                   BUILT ON CULTURE. DRIVEN TO COMPETE.
                 </p>
               </TiltContainer>
             </div>
 
-            <div className={`flex gap-4 hero-initial ${mounted ? 'hero-cta animate' : ''}`}>
+            {/* Center CTAs — sociais are rendered separately as fixed elements so they can slide to the side rails on scroll */}
+            <div
+              ref={heroCtaRowRef}
+              className={`hero-initial w-full max-w-3xl mx-auto px-2 sm:px-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5 ${mounted ? 'hero-cta animate' : ''}`}
+            >
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('roster')}
-                  className="cyber-glitch group relative px-7 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-xl"
+                  className="cyber-glitch group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Meet The Team</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -802,7 +852,7 @@ export default function App() {
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('schedule')}
-                  className="cyber-glitch group relative px-7 py-3 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-xl"
+                  className="cyber-glitch group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Schedule</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -820,51 +870,50 @@ export default function App() {
           <ChevronDown className="w-5 h-5 text-yellow-500" />
         </div>
 
-        {/* Floating social buttons with dynamic state transition */}
-        <div className="fixed z-50 pointer-events-none w-full h-full top-0 left-0">
-          {[XIcon, Twitch, Youtube, DiscordIcon].map((Icon, i) => {
-            // Calculate styles based on state
-            let style = {};
-            let baseClasses = `fixed pointer-events-auto w-8 h-8 sm:w-12 sm:h-12 bg-zinc-900/90 border-2 border-yellow-500/70 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black transition-all duration-1000 ease-[cubic-bezier(0.2,0.8,0.2,1)] shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-1 z-50 hero-initial ${mounted ? 'hero-social animate' : ''}`;
-
-            if (!scrolled) {
-              // Hero Positions
-              // Using inline styles for responsive calcs is tricky, but we can use CSS variables or media queries if strictly needed.
-              // However, since we used Tailwind arbitrary values before, we can use specific classes if we stick to the strings JIT can see.
-              // SAFEST: Use style for standard placement relative to viewport.
-
-              // To handle responsive md: values in inline style, we'd need window listener.
-              // BETTER: Return full class strings (no interpolation) for Hero, and style for Scrolled.
-
-              if (i === 0) baseClasses += " left-[calc(50%-460px)] md:left-[calc(50%-560px)] bottom-[5%] md:bottom-[10%]"; // Left Inner
-              if (i === 1) baseClasses += " left-[calc(50%-580px)] md:left-[calc(50%-680px)] bottom-[5%] md:bottom-[10%]"; // Left Outer
-              if (i === 2) baseClasses += " right-[calc(50%-460px)] md:right-[calc(50%-560px)] bottom-[5%] md:bottom-[10%]"; // Right Inner
-              if (i === 3) baseClasses += " right-[calc(50%-580px)] md:right-[calc(50%-680px)] bottom-[5%] md:bottom-[10%]"; // Right Outer
-            } else {
-              // Scrolled Positions (Vertical Stack) - Fixed bottom right
-              // Use inline style for the bottom offset to avoid JIT issues
-              const bottomOffset = 2 + ((3 - i) * 3.8);
-              style = {
-                bottom: `${bottomOffset}rem`,
-                right: '1rem' // "right-4" equiv
-              };
-              // Add responsive class purely for right spacing if needed, but style overrides.
-              // We'll rely on the style for positioning.
-            }
-
-            return (
-              <a
-                key={i}
-                href="#"
-                aria-label={`social-float-${i}`}
-                className={baseClasses}
-                style={Object.keys(style).length > 0 ? style : undefined}
-              >
-                <Icon className="w-4 h-4 sm:w-6 sm:h-6" />
-              </a>
-            );
-          })}
-        </div>
+        {/* Animated social buttons — the SAME DOM nodes slide from a row flanking the hero CTAs
+            into vertical rails at the bottom-left/right on scroll, via a transform transition. */}
+        {HERO_SOCIALS_FIXED.map(({ Icon, label, side, heroOffset, railIdx }) => {
+          const dir = side === 'left' ? -1 : 1;
+          // Hero-state: flank the measured CTA row. innermost (heroOffset=1) sits
+          // ~16px outside the CTA row edge; each step outward adds 60px (btn+gap).
+          const innerGap = 16;
+          const step = 90;
+          const outwardFromCenter = (anchorHalfWidth) =>
+            anchorHalfWidth + innerGap + 24 + (heroOffset - 1) * step;
+          let heroX;
+          let heroY;
+          if (heroAnchor) {
+            const off = outwardFromCenter(heroAnchor.halfWidth);
+            heroX = `${heroAnchor.centerX + off * dir - 24}px`;
+            heroY = `${heroAnchor.centerY - 24}px`;
+          } else {
+            // Pre-measurement fallback — keeps buttons hidden via opacity:0 below.
+            const off = outwardFromCenter(160);
+            heroX = `calc(50vw + ${off * dir}px - 24px)`;
+            heroY = `calc(50vh + 240px - 24px)`;
+          }
+          const railX = side === 'left'
+            ? '1rem'
+            : 'calc(100vw - 1rem - 48px)';
+          const railY = `calc(100vh - ${2 + (2 - railIdx) * 4}rem - 48px)`;
+          const tx = scrolled ? railX : heroX;
+          const ty = scrolled ? railY : heroY;
+          return (
+            <a
+              key={label}
+              href="#"
+              aria-label={label}
+              className={`hero-social-fixed fixed z-40 w-12 h-12 bg-zinc-900/90 border-2 border-yellow-500/70 flex items-center justify-center rounded-full text-zinc-400 hover:bg-yellow-500 hover:text-black shadow-lg hover:shadow-yellow-500/20 ${mounted ? 'is-mounted' : ''}`}
+              style={{
+                left: 0,
+                top: 0,
+                transform: `translate(${tx}, ${ty})`,
+              }}
+            >
+              <Icon className="w-6 h-6" />
+            </a>
+          );
+        })}
       </section>
 
       {/* ABOUT SECTION */}
@@ -1209,7 +1258,7 @@ export default function App() {
               {/* Founder Signature */}
               <div className="pt-6 border-t border-zinc-800">
                 <div className="transform -skew-x-6">
-                  <p className="text-yellow-500 font-bold text-base mb-1 hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">Eric "Wolfy2Hot" Madera</p>
+                  <p className="text-yellow-500 font-bold text-base mb-1 hover:text-white transition-colors duration-300 cursor-default hover:drop-shadow-[0_0_8px_rgba(245,197,24,0.5)]">Eric "Wolfy2Hot" Madera</p>
                 </div>
                 <p className="text-white text-xs font-mono uppercase hover:text-yellow-500 transition-colors duration-300 cursor-default">Founder and CEO of God Speed Esports</p>
               </div>

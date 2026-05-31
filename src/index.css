@@ -30,7 +30,7 @@ body {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #FFD700 #0a0a0a;
+  scrollbar-color: #F5C518 #0a0a0a;
 }
 
 /* Chrome, Edge, Safari */
@@ -44,7 +44,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FFD700;
+  background: #F5C518;
   border-radius: 0;
   border: 1px solid #0a0a0a;
   transition: background 0.3s ease;
@@ -55,7 +55,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: #eab308;
+  background: #F5C518;
 }
 
 /* Adjust letter spacing for different text sizes */
@@ -120,7 +120,7 @@ div {
 .streaks-left .streak:nth-child(1) {
   left: 10px;
   animation-delay: -0.13s;
-  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+  background: repeating-linear-gradient(to bottom, rgba(245, 197, 24, 0.375), rgba(245, 197, 24, 0.375) 720px, transparent 720px, transparent 774px);
 }
 
 .streaks-left .streak:nth-child(2) {
@@ -132,7 +132,7 @@ div {
 .streaks-left .streak:nth-child(3) {
   left: 30px;
   animation-delay: -0.67s;
-  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+  background: repeating-linear-gradient(to bottom, rgba(245, 197, 24, 0.375), rgba(245, 197, 24, 0.375) 720px, transparent 720px, transparent 774px);
 }
 
 .streaks-left .streak:nth-child(4) {
@@ -144,7 +144,7 @@ div {
 .streaks-left .streak:nth-child(5) {
   left: 50px;
   animation-delay: -0.53s;
-  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+  background: repeating-linear-gradient(to bottom, rgba(245, 197, 24, 0.375), rgba(245, 197, 24, 0.375) 720px, transparent 720px, transparent 774px);
 }
 
 .streaks-right .streak:nth-child(1) {
@@ -156,7 +156,7 @@ div {
 .streaks-right .streak:nth-child(2) {
   right: 20px;
   animation-delay: -0.47s;
-  background: repeating-linear-gradient(to bottom, rgba(255, 215, 0, 0.375), rgba(255, 215, 0, 0.375) 720px, transparent 720px, transparent 774px);
+  background: repeating-linear-gradient(to bottom, rgba(245, 197, 24, 0.375), rgba(245, 197, 24, 0.375) 720px, transparent 720px, transparent 774px);
 }
 
 .streaks-right .streak:nth-child(3) {
@@ -240,6 +240,30 @@ div {
   animation: fadeUp 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.6s forwards;
 }
 
+/* Social buttons live as position:fixed elements that translate between the
+   hero-row layout and the side-rail layout. The transform transition uses the
+   same easing/duration as the navbar so the two feel like one motion. */
+.hero-social-fixed {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.6s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hero-social-fixed.is-mounted {
+  opacity: 1;
+  transition:
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.6s ease 0.6s,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
 @keyframes navSlideDown {
   from {
     transform: translate3d(0, -100%, 0);
@@ -259,7 +283,7 @@ div {
 }
 
 .nav-logo:hover {
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5), 0 0 12px rgba(255, 215, 0, 0.3);
+  text-shadow: 0 0 6px rgba(245, 197, 24, 0.5), 0 0 12px rgba(245, 197, 24, 0.3);
 }
 
 @keyframes neon-pulse {
@@ -284,11 +308,11 @@ div {
 
   0%,
   100% {
-    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 5px rgba(234, 179, 8, 0.1), 0 0 10px rgba(234, 179, 8, 0.05);
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 5px rgba(245, 197, 24, 0.1), 0 0 10px rgba(245, 197, 24, 0.05);
   }
 
   50% {
-    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 15px rgba(234, 179, 8, 0.3), 0 0 25px rgba(234, 179, 8, 0.15);
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 15px rgba(245, 197, 24, 0.3), 0 0 25px rgba(245, 197, 24, 0.15);
   }
 }
 
@@ -337,7 +361,7 @@ div {
   background: linear-gradient(90deg,
       transparent 0%,
       rgba(255, 255, 255, 0.1) 40%,
-      rgba(255, 215, 0, 0.2) 50%,
+      rgba(245, 197, 24, 0.2) 50%,
       rgba(255, 255, 255, 0.1) 60%,
       transparent 100%);
   transform: skewX(-25deg);
@@ -374,18 +398,18 @@ div {
 /* Breathing Border for Special Cards */
 @keyframes breathe-border {
   0% {
-    border-color: rgba(234, 179, 8, 0.3);
-    box-shadow: 0 0 5px rgba(234, 179, 8, 0.1);
+    border-color: rgba(245, 197, 24, 0.3);
+    box-shadow: 0 0 5px rgba(245, 197, 24, 0.1);
   }
 
   50% {
-    border-color: rgba(234, 179, 8, 0.8);
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+    border-color: rgba(245, 197, 24, 0.8);
+    box-shadow: 0 0 15px rgba(245, 197, 24, 0.3);
   }
 
   100% {
-    border-color: rgba(234, 179, 8, 0.3);
-    box-shadow: 0 0 5px rgba(234, 179, 8, 0.1);
+    border-color: rgba(245, 197, 24, 0.3);
+    box-shadow: 0 0 5px rgba(245, 197, 24, 0.1);
   }
 }
 
