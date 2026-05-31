@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { Trophy, Users, Calendar, ArrowRight, Twitch, Youtube, Facebook, Instagram, Menu, X, ChevronDown, ChevronRight, Gamepad2, Zap, Target } from 'lucide-react';
-import CustomCursor from './components/CustomCursor';
 import HUDOverlay from './components/HUDOverlay';
 import LogoImg from './assets/logo.svg';
 import FounderImg from './assets/founder.webp';
@@ -216,7 +215,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
             <TiltContainer key={link.name} scale={1.1} maxRotation={15}>
               <button
                 onClick={() => scrollToSection(link.id)}
-                className="cyber-glitch group relative px-3 py-2 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white shadow-xl hover:shadow-2xl shadow-black/40"
+                className="group relative px-3 py-2 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white shadow-xl hover:shadow-2xl shadow-black/40"
               >
                 <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">{link.name}</span>
                 <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -241,7 +240,7 @@ const Navigation = ({ isScrolled, scrollToSection }) => {
             <button
               key={link.name}
               onClick={() => { scrollToSection(link.id); setIsOpen(false); }}
-              className="cyber-glitch group relative w-full text-left px-4 py-3 bg-yellow-500 text-black font-black italic uppercase skew-x-[-12deg] transition-all hover:bg-white"
+              className="group relative w-full text-left px-4 py-3 bg-yellow-500 text-black font-black italic uppercase skew-x-[-12deg] transition-all hover:bg-white"
             >
               <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">{link.name}</span>
               <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -562,10 +561,9 @@ export default function App() {
   };
 
   return (
-    <div id="warp-container" className="bg-black min-h-screen text-white font-sans selection:bg-yellow-500 selection:text-black overflow-x-hidden md:cursor-none">
+    <div id="warp-container" className="bg-black min-h-screen text-white font-sans selection:bg-yellow-500 selection:text-black overflow-x-hidden">
       <div className="godspeed-rail"></div>
       <div className="hidden md:block">
-        <CustomCursor zoomRef={zoomRef} />
         <HUDOverlay />
       </div>
       <div className="streaks-container">
@@ -774,12 +772,20 @@ export default function App() {
           <div
             className="mb-8 relative group"
             onMouseMove={(e) => {
-              const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-              const x = (e.clientX - left) / width - 0.5;
-              const y = (e.clientY - top) / height - 0.5;
-              e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale3d(1, 1, 1)`;
+              const target = e.currentTarget;
+              const cx = e.clientX;
+              const cy = e.clientY;
+              if (target._tiltRaf) return;
+              target._tiltRaf = requestAnimationFrame(() => {
+                target._tiltRaf = 0;
+                const { left, top, width, height } = target.getBoundingClientRect();
+                const x = (cx - left) / width - 0.5;
+                const y = (cy - top) / height - 0.5;
+                target.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale3d(1, 1, 1)`;
+              });
             }}
             onMouseLeave={(e) => {
+              if (e.currentTarget._tiltRaf) { cancelAnimationFrame(e.currentTarget._tiltRaf); e.currentTarget._tiltRaf = 0; }
               e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
             }}
           >
@@ -788,22 +794,30 @@ export default function App() {
               <img
                 src={LOGO_URL}
                 alt="GOD SPEED Logo"
-                className="w-48 h-48 md:w-72 md:h-72 object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 animate-logo-pulse group-hover:[animation-play-state:paused] group-hover:drop-shadow-[0_0_4px_rgba(0,0,0,1)]"
+                className="w-44 h-44 md:w-[16rem] md:h-[16rem] object-contain relative z-10 transition-all duration-500 ease-out group-hover:scale-105 animate-logo-pulse group-hover:[animation-play-state:paused] group-hover:drop-shadow-[0_0_4px_rgba(0,0,0,1)]"
                 style={{ top: '6px' }}
               />
             </div>
           </div>
 
           <div className={`-mt-3 md:-mt-4 flex flex-col items-center hero-initial ${mounted ? 'hero-title animate' : ''}`}>
-            <h1 className="group relative text-6xl md:text-9xl font-black uppercase tracking-tighter mb-4 leading-none select-none cursor-pointer"
+            <h1 className="group relative text-[4rem] md:text-[9.5rem] font-black uppercase tracking-tighter mb-4 leading-none select-none cursor-pointer"
               style={{ textShadow: '0 8px 24px rgba(0,0,0,0.6)' }}
               onMouseMove={(e) => {
-                const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - left) / width - 0.5;
-                const y = (e.clientY - top) / height - 0.5;
-                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+                const target = e.currentTarget;
+                const cx = e.clientX;
+                const cy = e.clientY;
+                if (target._tiltRaf) return;
+                target._tiltRaf = requestAnimationFrame(() => {
+                  target._tiltRaf = 0;
+                  const { left, top, width, height } = target.getBoundingClientRect();
+                  const x = (cx - left) / width - 0.5;
+                  const y = (cy - top) / height - 0.5;
+                  target.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+                });
               }}
               onMouseLeave={(e) => {
+                if (e.currentTarget._tiltRaf) { cancelAnimationFrame(e.currentTarget._tiltRaf); e.currentTarget._tiltRaf = 0; }
                 e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
               }}
             >
@@ -843,7 +857,7 @@ export default function App() {
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('roster')}
-                  className="cyber-glitch group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
+                  className="group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Meet The Team</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -852,7 +866,7 @@ export default function App() {
               <TiltContainer scale={1.05} maxRotation={12}>
                 <button
                   onClick={() => scrollToSection('schedule')}
-                  className="cyber-glitch group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
+                  className="group relative shrink-0 px-5 py-3 sm:px-7 bg-yellow-500 text-black font-black italic uppercase overflow-hidden transform skew-x-[-12deg] transition-all hover:bg-white text-base sm:text-xl"
                 >
                   <span className="relative z-10 inline-block skew-x-[12deg] group-hover:translate-x-1 transition-transform">Schedule</span>
                   <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
@@ -1100,7 +1114,7 @@ export default function App() {
                   href="https://www.twitch.tv/godspeedes"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="cyber-glitch w-full md:w-auto px-4 md:px-6 py-2 bg-yellow-500 border border-yellow-500 text-black font-bold uppercase text-sm hover:bg-yellow-400 hover:border-yellow-400 transition-all text-center"
+                  className="w-full md:w-auto px-4 md:px-6 py-2 bg-yellow-500 border border-yellow-500 text-black font-bold uppercase text-sm hover:bg-yellow-400 hover:border-yellow-400 transition-all text-center"
                 >
                   {isLive ? 'WATCH ON TWITCH' : 'FOLLOW ON TWITCH'}
                 </a>
